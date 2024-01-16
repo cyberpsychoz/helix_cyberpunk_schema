@@ -1,0 +1,12 @@
+ITEM.name = "Подкожная броня"
+ITEM.description = "Многослойное упрочненное волокно, имплантируемое под кожу по всему телу. Обеспечивает надежную защиту от пуль, осколков, ударов холодным и тупым оружием. Сводит к минимуму урон и кровотечения. Выдерживает многократные попадания."
+ITEM.category = "Implants"
+ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.bonus = 15
+ITEM.basechance = 20
+ITEM.attrboost = "phy"
+ITEM.skillbonus = -5
+ITEM.skillname = "shooting"
+ITEM.bodypart = "Кожа"

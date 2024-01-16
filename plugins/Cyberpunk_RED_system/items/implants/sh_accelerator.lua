@@ -1,0 +1,12 @@
+ITEM.name = "Нейро-мышечный акселератор \"Спринтер\""
+ITEM.description = "Имплант, стимулирующий нервную систему и мышечные волокна. Немного повышает скорость движений и бега до пределов человеческих возможностей."
+ITEM.category = "Implants"
+ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.bonus = 2
+ITEM.attrboost = "ref"
+ITEM.skillbonus = 4
+ITEM.skillname = "athletic"
+ITEM.basechance = 15
+ITEM.bodypart = "Нервная система"

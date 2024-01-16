@@ -1,0 +1,8 @@
+ITEM.name = "Парацетамол"
+ITEM.model = "models/props_junk/garbage_metalcan001a.mdl"
+ITEM.description = "Самые обыкновенные жаропонижающие таблетки, в них нет ничего интересного."
+ITEM.width = 1
+ITEM.height = 1
+ITEM.category = "Medicine"
+ITEM.useSound = "items/medshot4.wav"
+ITEM.healing = "cough"

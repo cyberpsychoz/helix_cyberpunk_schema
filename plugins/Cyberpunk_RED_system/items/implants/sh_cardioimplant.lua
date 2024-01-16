@@ -1,0 +1,13 @@
+ITEM.name = "Кардио имплант \"Шанс\""
+ITEM.description = "Высокотехнологичный электронный кардиоимплант с автономным источником питания. Стимулирует работу сердца, повышая эффективность сокращений и улучшая кровообращение."
+ITEM.category = "Implants"
+ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.bonus = 3
+ITEM.basechance = 15
+ITEM.attrboost = "phy"
+ITEM.skillbonus = 2
+ITEM.skillname = "athletic"
+ITEM.basechance = 17
+ITEM.bodypart = "Кровеносная система"

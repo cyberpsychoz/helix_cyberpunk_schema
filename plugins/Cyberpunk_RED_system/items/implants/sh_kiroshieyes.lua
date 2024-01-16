@@ -1,0 +1,12 @@
+ITEM.name = "Нейро-оптика \"Kirosi X2-80\""
+ITEM.description = "Довольно старая, но до сих пор актуальная модель оптики. Это же Kirosi!"
+ITEM.category = "Implants"
+ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.width = 1
+ITEM.height = 1
+ITEM.bonus = 2
+ITEM.attrboost = "int"
+ITEM.skillbonus = 10
+ITEM.skillname = "attention"
+ITEM.basechance = 35
+ITEM.bodypart = "Зрительная система"
