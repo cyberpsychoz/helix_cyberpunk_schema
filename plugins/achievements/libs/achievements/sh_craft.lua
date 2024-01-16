@@ -1,7 +1,7 @@
 // First Craft
 local achievement = {
-    name = "First Craft",
-    description = "Craft your first item, on any crafting station.",
+    name = "Инженер на час",
+    description = "Создать свой первый предмет на верстаке.",
     icon = "minerva/halflife2/icons/lambda.png",
     OnCompleted = function(ply)
     end

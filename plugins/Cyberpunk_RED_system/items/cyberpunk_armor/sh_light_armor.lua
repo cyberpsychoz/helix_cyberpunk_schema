@@ -1,0 +1,11 @@
+ITEM.name = "Лёгкий бронежилет \"Militech - CIVIL\""
+ITEM.description = "Один из самых распространенных и удобных бронежилетов среди гражданского население Мондфилда."
+ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.width = 2
+ITEM.height = 2
+ITEM.price = 450
+ITEM.armorclass = 1 -- Класс брони, который должен устанавливаться через SetData()
+ITEM.attributeCheckName = "phy" -- Название атрибута на который будет делаться проверка
+ITEM.attributeCheckValue = 20 -- Значение, ниже которого персонаж сможет надевать бронежилет (то есть все у кого атрибут phy < 20, могу надевать бронежилет) 
+ITEM.category = "Armor"
+ITEM.outfitCategory = "Chest"

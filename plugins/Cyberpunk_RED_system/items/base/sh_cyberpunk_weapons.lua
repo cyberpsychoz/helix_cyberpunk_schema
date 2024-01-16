@@ -11,6 +11,8 @@ ITEM.isGrenade = false
 ITEM.weaponCategory = "sidearm"
 ITEM.useSound = "items/ammo_pickup.wav"
 
+
+--[[
 -- Захват цели
 properties.Add("target_capture", {
     MenuLabel = "Захват цели",
@@ -347,3 +349,4 @@ hook.Add("EntityRemoved", "ixRemoveGrenade", function(entity)
 		end
 	end
 end)
+]]

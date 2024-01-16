@@ -282,3 +282,41 @@ ix.command.Add("tpDeathPos", {
     	client:SetPos(Vector(-1654.919800, 739.729248, -141.836304))
     end
 })
+
+ix.command.Add("characterData", {
+	adminOnly = true,
+    syntax = "<имя персонажа>",
+    description = "Показывает информацию об персонаже в консоль.",
+    arguments = {ix.type.player},
+    OnRun = function(self, client, target)
+        local character = target:GetCharacter()
+        if character then
+        	print("=== ДАННЫЕ ПЕРСОНАЖА ===")
+            PrintTable(character)  
+        else
+            print("Персонаж с таким именем не найден.")
+        end
+    end
+})
+
+ix.command.Add("characterArmorClass", {
+	adminOnly = true,
+    syntax = "<имя персонажа>",
+    description = "Показывает информацию об классе брони персонажа.",
+    arguments = {ix.type.player},
+    OnRun = function(self, client, target)
+        local character = target:GetCharacter()
+        if character then
+            local armorData = character:GetData("armorclass", "None")
+            print("=== ЭКСТРЕМАЛЬНЫЙ ДЕБАГ БРОНИ ===")
+            -- Проверяем, есть ли у персонажа установленные импланты
+            --if armorData then
+            --    print("Бронежилет отсутствует у " .. character:GetName() .. ".")
+            --else
+                print(armorData)
+            --end
+        else
+            print("Персонаж с таким именем не найден.")
+        end
+    end
+})
