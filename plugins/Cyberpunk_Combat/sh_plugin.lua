@@ -4,20 +4,27 @@ PLUGIN.name = "Cyberpunk RED Battle System"
 PLUGIN.author = "Крыжовник"
 PLUGIN.description = "ПОЖАЛУЙСТА"
 
---[[
-Known Bugs:
+properties.Add("target_capture", {
+    MenuLabel = "Захват цели",
+    Order = 1000,
+    MenuIcon = "materials/icons/eye.png",
 
-- The plugin will not work on singleplayer. I have no clue why It just don't.
-- The server may spit out nul values when players are flip flopping between turns. The combat works normally but it's still going to spit it out.
-- Some NPC won't freeze properly and will continue to attack even when frozen 
-- Projectile based weapons can not initiate ranged combat
-- Granades will still explode. (I'd love to have them join the turn order but for some reason they aren't counted as true NPCs)
+    Filter = function(self, ent, ply)
+        return IsValid(ent)
+    end,
 
-Notes: 
+    Action = function(self, ent)
+        self:MsgStart()
+            net.WriteEntity(ent)
+        self:MsgEnd()
+    end,
 
-- If I get more freetime/plan on reworking this plugin undo the massive think hook, people will dislike my use of it. i'm aware think hooks have a massive hit to preformance.
---]]
-
+    Receive = function(self, length, ply)
+        local ent = net.ReadEntity()
+        if not IsValid(ent) then return end
+        ply:GetCharacter():SetData("target", ent)
+    end
+})
 
 ix.config.Add("Turn Based Combat On/Off", true, "Включает и выключает пошаговый бой.", nil, {
 	category = "Turn Based Combat System"
@@ -130,6 +137,96 @@ if (SERVER) then
         end
     end)
 
+	-- АТАКА
+	hook.Add("PlayerButtonDown", "DamageTargetOnKeyPress", function(ply, button)
+		if button == KEY_H then
+			local target = ply:GetCharacter():GetData("target")
+			if IsValid(target) then
+				local isNPC = target:IsNPC()  -- Проверяем, является ли цель NPC
+				local evasionSkill = isNPC and target.Evasion or ply:GetCharacter():GetSkill("evasion")  -- Получаем соответствующий навык уклонения
+	
+				local weapon = ply:GetCharacter():GetData("weapon")
+				local dmgskill = 0
+				local totaldamage = 0
+				if weapon then
+					dmgskill = isNPC and weapon.damage or ply:GetCharacter():GetSkill(weapon.skill) + weapon.damage
+					totaldamage = math.random(0, dmgskill)
+					local weaponRange = weapon.destination or 100
+					local targetPos = target:GetPos()
+					local plyPos = ply:GetPos()
+					local direction = (targetPos - plyPos):GetNormalized()
+					local trace = util.TraceLine({
+						start = plyPos,
+						endpos = plyPos + direction * weaponRange,
+						filter = ply
+					})
+					if trace.Hit and trace.Entity != target then
+						ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Цель сейчас находится за укрытием!")]]))
+						return
+					elseif not trace.Hit then
+						ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Ваше оружие имеет недостаточный радиус для поражения цели!")]]))
+						return
+					end
+				else
+					ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "У вас нет оружия, вы атакуете голыми руками!")]]))
+					return
+				end
+	
+				if weapon.skill == "pistols" or weapon.skill == "rifles" or weapon.skill == "energy_weapons" then
+					if ply:GetNWBool("IsInCombat", false) then
+						if ply:GetNWBool("MyTurn", false) then
+							local AP = ply:GetNWInt("AP", 0)
+							if AP > 0 then
+								local attackerShootingSkill = ply:GetCharacter():GetSkill("shooting")
+								local targetEvasionSkill = evasionSkill
+								local randomHit = math.random(0, attackerShootingSkill)
+								local randomMiss = math.random(0, targetEvasionSkill)
+								if randomHit >= randomMiss then
+									local targetArmorClass = isNPC and target.Armor or target:GetData("armorclass")
+									local weaponPenetration = weapon.penetration
+									if weaponPenetration > targetArmorClass then
+										if isNPC then
+											ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+										else
+											ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+										end
+										target:TakeDamage(totaldamage, ply, ply)
+										ply:SetNWInt("AP", AP - 1)
+									else
+										if isNPC then
+											ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и пуля рикошетит!")
+										else
+											ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и пуля рикошетит!")
+										end
+										ply:SetNWInt("AP", AP - 1)
+									end
+								else
+									if isNPC then
+										ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и промахивается!")
+									else
+										ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и промахивается!")
+									end
+									ply:SetNWInt("AP", AP - 1)
+								end								
+							else
+								ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Недостаточно очков действия для атаки!")]]))
+								return
+							end
+						else
+							ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Сейчас не ваш ход для атаки!")]]))
+						end
+					else
+						ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Вы не можете атаковать, пока не находитесь в бою!")]]))
+					end
+				else
+					ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Пока что вы не можете использовать оружие ближнего боя!")]]))
+				end
+			else
+				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Невозможно нанести урон по неопознанной цели!")]]))
+			end
+		end
+	end)	
+	
 	function PLUGIN:ResetCombatStatus(client)
 		timer.Simple( 0.1, function()
 			client:SetNWBool( "WarmUpBegin", false )

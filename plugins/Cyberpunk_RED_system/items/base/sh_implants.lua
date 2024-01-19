@@ -55,9 +55,10 @@ ITEM.functions.Use = {
             -- Проверяем валидность цели 
             if IsValid(target) and target:IsPlayer() and target ~= client then
                 local cybertechSkill = client:GetCharacter():GetSkill("cybertech", 0)
+                local cyberint = client:GetCharacter():GetAttribute("int", 0)
 
                 -- Модификатор
-                local chanceModifier = cybertechSkill * 5 -- Уровень cybertech добавляет 5% к шансу на 1 пункт, НЕ ЗАБЫТЬ
+                local chanceModifier = cybertechSkill + (cyberint / 2) -- ТЕПЕРЬ МЫ ПРИБАВЛЯЕМ УРОВЕНЬ ИНТЕЛЛЕКТА ДЕЛЕНОГО НА ДВА
 
                 -- Рассчитываем общий шанс
                 local randomNum = math.random(1, chanceModifier)

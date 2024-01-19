@@ -98,6 +98,7 @@ function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 	else
 		-- "Баним" персонажа
 		character:Ban()
+		--character:SetData()
 		-- Выбираем случайное сообщение о смерти
 		local message = deathMessages[math.random(#deathMessages)]
 		for _, ply in ipairs(player.GetAll()) do

@@ -1,2 +1,2 @@
-SKILL.name = "Внимание"
+SKILL.name = "Внимательность"
 SKILL.description = ""

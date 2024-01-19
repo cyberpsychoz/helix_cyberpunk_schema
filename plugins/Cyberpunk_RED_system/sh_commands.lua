@@ -70,7 +70,6 @@ ix.command.Add("RollStat", {
 --[[
 	COMMAND: /RollAttack
 	DESCRIPTION: Automatically makes an attack roll based on the weapon that the player is holding.
-]]--
 
 ix.command.Add("RollAttack", {
 	syntax = nil,
@@ -105,6 +104,7 @@ ix.command.Add("RollAttack", {
 		end
 	end
 })
+]]--
 
 -- Функция для расчета броска кубика с учетом формата "XdY"
 function calcDice(diceFormat)
@@ -299,7 +299,7 @@ ix.command.Add("characterData", {
     end
 })
 
-ix.command.Add("characterArmorClass", {
+ix.command.Add("CharGetArmor", {
 	adminOnly = true,
     syntax = "<имя персонажа>",
     description = "Показывает информацию об классе брони персонажа.",
@@ -317,6 +317,34 @@ ix.command.Add("characterArmorClass", {
             --end
         else
             print("Персонаж с таким именем не найден.")
+        end
+    end
+})
+
+ix.command.Add("CharSetArmor", {
+    adminOnly = true,
+    syntax = "<имя персонажа> <класс брони>",
+    description = "Устанавливает класс брони для персонажа",
+    arguments = {ix.type.player, ix.type.string},
+    OnRun = function(self, client, target, armorClass)
+        local character = target:GetCharacter()
+        if character then
+            character:SetData("armorclass", armorClass)
+            client:Notify("Класс брони установлен на " .. armorClass .. " для " .. target:Name())
+        else
+            client:Notify("Персонаж с таким именем не найден.")
+        end
+    end
+})
+
+ix.command.Add("CharSetSkill", {
+    description = "Установить значение скилла игрока",
+    adminOnly = true,
+    arguments = {ix.type.player, ix.type.string , ix.type.number},
+    OnRun = function(self, client, target, skillName, skillValue)
+        if (IsValid(target) and target:GetCharacter()) then
+            target:GetCharacter():SetSkill(skillName, skillValue)
+            client:Notify("Значение скилла" .. skillName .. " установлено на " .. skillValue .. " для " .. target:Name())
         end
     end
 })
