@@ -2,7 +2,7 @@
 "helix_cyberpunk_schema"
 {
 	"base" 			"helix"
-	"title" 		"Cyberpunk RED | Beta v0.2 | On Github"
+	"title" 		"Cyberpunk RED | Beta v0.3"
 	"author" 		"Крыжомбус"
 	"menusystem"	"1"
 }

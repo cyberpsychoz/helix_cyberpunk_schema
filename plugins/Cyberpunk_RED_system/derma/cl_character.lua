@@ -161,7 +161,19 @@ function PANEL:Init()
 	-- СИСТЕМА ФОНОВ
     local images = {"materials/backs/1.jpg", 
                     "materials/backs/2.jpg", 
-                    "materials/backs/3.jpg"}
+                    "materials/backs/3.jpg",
+					"materials/backs/4.jpg",
+					"materials/backs/5.jpg",
+					"materials/backs/6.jpg",
+					"materials/backs/7.jpg",
+					"materials/backs/8.jpg",
+					"materials/backs/9.jpg",
+					"materials/backs/10.jpg",
+					"materials/backs/11.jpg",
+					"materials/backs/12.jpg",
+					"materials/backs/13.jpg",
+					"materials/backs/14.jpg",
+					"materials/backs/15.jpg"}
 
     local index = math.random(#images)
 
@@ -209,7 +221,7 @@ function PANEL:Init()
 	
 	-- логотип
 	local titleImage = self:Add("DImage")
-	titleImage:SetImage("materials/2_3.png")
+	titleImage:SetImage("materials/backs/logo.png")
 	titleImage:SetSize(480, 270)
 	titleImage:SetPos(100, 300)
 

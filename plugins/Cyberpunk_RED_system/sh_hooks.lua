@@ -63,6 +63,7 @@ local deathMessages = {
     "Кто-нибудь видел %s? Он на звонки не отвечает... Может умер?",
 }
 
+-- смерть
 function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 	local character = victim:GetCharacter()
 	local bonus = character:GetAttribute("phy", 0) + character:GetAttribute("ref", 0)
@@ -97,7 +98,7 @@ function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 		end)
 	else
 		-- "Баним" персонажа
-		character:Ban()
+		--character:Ban()
 		--character:SetData()
 		-- Выбираем случайное сообщение о смерти
 		local message = deathMessages[math.random(#deathMessages)]
@@ -107,3 +108,9 @@ function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 	end
 end
 
+hook.Add("PostPlayerLoadout", "SetDefaultArmor", function(player)
+    local character = player:GetCharacter()
+    if character and character:GetData("armorclass") == nil then
+        character:SetData("armorclass", 0)
+    end
+end)

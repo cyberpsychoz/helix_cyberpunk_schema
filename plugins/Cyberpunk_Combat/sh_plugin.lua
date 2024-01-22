@@ -149,7 +149,7 @@ if (SERVER) then
 				local dmgskill = 0
 				local totaldamage = 0
 				if weapon then
-					dmgskill = isNPC and weapon.damage or ply:GetCharacter():GetSkill(weapon.skill) + weapon.damage
+					dmgskill = ply:GetCharacter():GetSkill(weapon.skill) + weapon.damage
 					totaldamage = math.random(0, dmgskill)
 					local weaponRange = weapon.destination or 100
 					local targetPos = target:GetPos()
