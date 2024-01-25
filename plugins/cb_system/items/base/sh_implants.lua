@@ -12,13 +12,14 @@ ITEM.useSound = "items/ammo_pickup.wav"
 -- Функция проверки возможности использования предмета
 function ITEM:CanPlayerInstallImplant(player)
     local character = player:GetCharacter()
-    return character:GetClass() == CLASS_REPMED
+    return character:GetBackground() == "Рипер"
 end
 
 -- Функция для добавления или обновления данных об установленных имплантах
 function ITEM:AddImplantData(player, implantName)
     print("Игрок: ", player)
     local character = player:GetCharacter()
+    --local backstory = character:GetBackground()
     local implantsData = character:GetData("implants", {})
     local boostname = self.attrboost
     local boostbonus = self.bonus
@@ -47,6 +48,9 @@ ITEM.functions.Use = {
     icon = "icons/0_2.png",
     OnRun = function(item)
         local client = item.player
+        -- Дебаг
+        --local backtest= client:GetCharacter():GetBackground()
+        --print(backtest)
 
         if item:CanPlayerInstallImplant(client) then
             local trace = client:GetEyeTraceNoCursor()
@@ -68,24 +72,24 @@ ITEM.functions.Use = {
 
                 -- Проверка возможности установки импланта
                 if randomNum >= item.basechance then
-                    target:ChatPrint(client:GetName() .. " успешно установил вам имплант!")
-                    client:ChatPrint("Вы успешно установили имплант " .. target:GetName() .. "!")
+                    target:ChatPrint("*" .. client:GetName() .. " успешно установил вам имплант!*")
+                    client:ChatPrint("*Вы успешно установили имплант " .. target:GetName() .. "!*")
 
                     -- Добавляем или обновляем имплант в данных персонажа
                     item:AddImplantData(target, item.name)
                     return true
                 else
-                    client:ChatPrint("При установке импланта что-то пошло не так...")
-                    target:ChatPrint("При установке импланта что-то пошло не так...")
+                    client:ChatPrint("*При установке импланта что-то пошло не так...*")
+                    target:ChatPrint("*При установке импланта что-то пошло не так...*")
                     target:TakeDamage(item.bonus)
                     return false
                 end
             else
-                client:ChatPrint("Чумба ты не можешь вставить имплант сам себе!")
+                client:ChatPrint("*Чумба ты не можешь вставить имплант сам себе!*")
                 return false
             end
         else
-            client:ChatPrint("Даже блять не пробуй это делать. Ты без понятия как устанавливать импланты.")
+            client:ChatPrint("*Даже блять не пробуй это делать. Ты без понятия как устанавливать импланты.*")
             return false
         end
     end

@@ -6,7 +6,7 @@ local matrixZScale = Vector(1, 1, 0.0001)
 
 --КАСТОМНЫЙ ШРИФТ
 surface.CreateFont("CyberpunkFont", {
-    font = "New_Zelek",
+    font = "TTSupermolotNeue-Medium",
     size = 32,
     weight = 300,
     --antialias = true,

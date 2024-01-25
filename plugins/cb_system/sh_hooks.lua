@@ -43,13 +43,13 @@ local deathMessages = {
     "%s прожил ужасную жизнь.",
     "%s прожил счастливую жизнь.",
     "Сообщение для друзей %s, ПОРА МСТИТЬ!",
-    "Нечего %s, в следующий раз получится.",
+    "Ничего %s, в следующий раз получится.",
     "В сети начали всплывать фото мёртвого %s.",
     "%s теперь загадка для хирурга.",
     "%s скоропостижнулся.",
     "А %s надо было меньше играть в компьютер.",
     "Теперь %s знает, есть ли жизнь после смерти.",
-    "Урод, который убил %s, тебе привет передают :)",
+    "Урод, который убил %s, тебе привет передают.",
     "Урод, который убил %s, спасибо.",
     "Ну теперь %s импланты не понадобятся.",
     "В новостях говорят, что %s догрызают собаки.",
@@ -85,31 +85,49 @@ function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 	if (roll + bonus) > maxroll then
 		-- Сохраняем местоположение смерти
 		local deathPos = victim:GetPos()
-		print("ДЕБАГ ПОЗИЦИИ СМЕРТИ: " .. tostring(deathPos))
+		--print("ДЕБАГ ПОЗИЦИИ СМЕРТИ: " .. tostring(deathPos))
 		-- Воскрешаем персонажа
 		victim:SetNetVar("deathTime", CurTime() + .1)
-		-- Создаем таймер с задержкой в 3 секунды
-		timer.Simple(1.5, function()
+		-- Создаем таймер с задержкой в секунды
+		timer.Simple(5.2, function() -- НАПОМИНАНИЕ, ВРЕМЯ ВОЗРОЖДЕНИЯ ДОЛЖНО БЫТЬ ПЯТЬ СЕКУНД
 			-- Проверяем, все ли еще в порядке с персонажем
 			if IsValid(victim) then
+				local maxHP = character:GetAttribute("phy") * 10
+				if maxHP == 0 or nil then
+					maxHP = 10
+				end
+
+				victim:SetMaxHealth(maxHP)
+				victim:SetHealth(maxHP/4)
 				-- Перемещаем персонажа на место смерти
 				victim:SetPos(deathPos)
 			end
 		end)
 	else
-		-- "Баним" персонажа
-		--character:Ban()
-		--character:SetData()
 		-- Выбираем случайное сообщение о смерти
 		local message = deathMessages[math.random(#deathMessages)]
 		for _, ply in ipairs(player.GetAll()) do
 		    ply:ChatPrint(string.format("*" .. message .. "*", character:GetName()))
 		end
+		-- "Баним" персонажа
+		character:SetData("IsBanned", true)
+		timer.Simple(4.5, function()
+		    character:Ban()
+		end)
 	end
 end
 
 hook.Add("PostPlayerLoadout", "SetDefaultArmor", function(player)
     local character = player:GetCharacter()
+    local maxHP = character:GetAttribute("phy") * 10
+
+    if maxHP == 0 or nil then
+        maxHP = 20
+    end
+
+    player:SetMaxHealth(maxHP)
+    --character:SetHealth(maxHP)
+
     if character and character:GetData("armorclass") == nil then
         character:SetData("armorclass", 0)
     end

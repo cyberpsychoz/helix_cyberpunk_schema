@@ -545,8 +545,10 @@ function PANEL:VerifyProgression(name)
 end
 
 function PANEL:Paint(width, height)
-	derma.SkinFunc("PaintCharacterCreateBackground", self, width, height)
-	BaseClass.Paint(self, width, height)
+    surface.SetDrawColor(255, 255, 255) -- Установите цвет рисования
+    surface.SetMaterial(Material("materials/backs/cm1.jpg")) -- Установите материал картинки
+    surface.DrawTexturedRect(0, 0, width, height) -- Нарисуйте текстурированный прямоугольник с размерами панели
 end
+
 
 vgui.Register("ixCharMenuNew", PANEL, "ixCharMenuPanel")

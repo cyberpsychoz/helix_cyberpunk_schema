@@ -150,6 +150,8 @@ if (SERVER) then
 	
 			-- Проверка на наличие оружия
 			local weapon = ply:GetCharacter():GetData("weapon")
+			--Дебаг
+			--PrintTable(weapon)
 			if not weapon then
 				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "У вас нет оружия, вы атакуете голыми руками!")]]))
 				return
@@ -175,7 +177,10 @@ if (SERVER) then
 			end
 	
 			-- Вычисление урона
-			local dmgskill = ply:GetCharacter():GetSkill(weapon.skill) + weapon.damage
+			local charskill = ply:GetCharacter():GetSkill(weapon.skill) or 0
+			--print("Дебаг урона оружия", weapon.damage)
+			--print("Дебаг скилла оружия:", charskill)
+			local dmgskill = charskill + weapon.damage
 			local totaldamage = math.random(0, dmgskill)
 	
 			-- Проверка дальности атаки
@@ -190,26 +195,39 @@ if (SERVER) then
 				filter = ply
 			})
 	
-			if trace.Hit and trace.Entity != target then
-				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Что-то мешает вам сделать выстрел по цели!")]]))
+			if trace.HitSky then
+				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Ваше оружие не направлено в сторону цели или что-то не позволяет вам попасть по ней!")]]))
 				return
 			elseif not trace.Hit or trace.HitPos:Distance(plyPos) > weaponRange then
 				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Ваше оружие имеет недостаточный радиус для поражения цели!")]]))
 				return
+			elseif trace.Hit and (not trace.Entity:IsPlayer() and not trace.Entity:IsNPC())  then
+			    ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Цель находится за укрытием!")]]))
+			    return
 			end
+
+			-- Передача линии на клиент дебаг
+			--util.AddNetworkString("DrawLine")
+			--net.Start("DrawLine")
+			--    net.WriteVector(plyPos)
+			--    net.WriteVector(trace.HitPos)
+			--net.Send(ply)
 	
 			-- Продолжение атаки
 			local isNPC = target:IsNPC()  -- Проверяем, является ли цель NPC
-			local evasionSkill = isNPC and target.Evasion or ply:GetCharacter():GetSkill("evasion")  -- Получаем соответствующий навык уклонения
-			local attackerShootingSkill = ply:GetCharacter():GetSkill("shooting")
+			local evasionSkill = isNPC and target.Evasion or ply:GetCharacter():GetSkill("evasion", 0)  -- Получаем соответствующий навык уклонения
+			local attackerShootingSkill = ply:GetCharacter():GetSkill("shooting") or 0
 			local targetEvasionSkill = evasionSkill
 			local randomHit = math.random(0, attackerShootingSkill)
 			local randomMiss = math.random(0, targetEvasionSkill)
-			local targetArmorClass = isNPC and target.Armor or target:GetData("armorclass")
-			local weaponPenetration = weapon.penetration
+			local targetArmorClass = isNPC and target.Armor or target:GetData("armorclass", 0)
+			local weaponPenetration = weapon.penetration or 0
+			--Дебаг
+			--print("Пенетрация: ", weaponPenetration)
+			--print("Гейская: ", targetArmorClass)
 			
 			if randomHit >= randomMiss then
-				if weaponPenetration > targetArmorClass then
+				if weaponPenetration >= targetArmorClass then
 					if isNPC then
 						ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
 					else
@@ -686,6 +704,15 @@ if (SERVER) then
 end
 
 if (CLIENT) then
+	--net.Receive("DrawLine", function()
+	--    local plyPos = net.ReadVector()
+	--    local hitPos = net.ReadVector()
+
+	    -- Отрисовка линии на экране игрока
+	--   surface.SetDrawColor(255, 0, 0)
+	--    surface.DrawLine(plyPos.x, plyPos.y, hitPos.x, hitPos.y)
+	--end)
+
 	local w, h = ScrW(), ScrH()
 	surface.CreateFont( "TBCWarmUpFont", {
 	font = "New_Zelek",

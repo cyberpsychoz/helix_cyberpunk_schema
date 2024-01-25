@@ -50,7 +50,7 @@ if SERVER then
         self:SetSolid(SOLID_BBOX)
         self:DropToFloor()
 
-        self:SetHealth(220)
+        self:SetHealth(125)
         self:CapabilitiesAdd(CAP_MOVE_GROUND)
 
         self:SetMoveType(MOVETYPE_STEP)
