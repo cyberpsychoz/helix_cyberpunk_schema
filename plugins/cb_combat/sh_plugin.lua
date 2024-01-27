@@ -740,7 +740,7 @@ if (CLIENT) then
 	weight = 500,
 	blursize = 0,
 	scanlines = 0,
-	antialias = true,
+	antialias = false,
 	underline = false,
 	italic = false,
 	strikeout = false,
@@ -748,7 +748,7 @@ if (CLIENT) then
 	rotary = false,
 	shadow = false,
 	additive = false,
-	outline = true,
+	outline = false,
 	} )
 	
 	local w, h = ScrW(), ScrH()
@@ -759,7 +759,7 @@ if (CLIENT) then
 	weight = 500,
 	blursize = 0,
 	scanlines = 0,
-	antialias = true,
+	antialias = false,
 	underline = false,
 	italic = false,
 	strikeout = false,
@@ -767,7 +767,7 @@ if (CLIENT) then
 	rotary = false,
 	shadow = false,
 	additive = false,
-	outline = true,
+	outline = false,
 	} )
 	
 	function PLUGIN:factorial(n)
@@ -808,7 +808,7 @@ if (CLIENT) then
 					
 					cam.Start3D2D( ply:GetNWVector( "StartPos", ply:GetPos() ) + trace.HitNormal, trace.HitNormal:Angle() + Angle( 90, 0, 0 ), 1 )
 						
-						surface.SetDrawColor( 0, 0, 0, 200)
+						surface.SetDrawColor( 163, 0, 0, 200)
 						draw.NoTexture()
 						draw.Circle( 0, 0, (ix.config.Get("movementradius", 10) + char:GetSkill("athletic", 0)) * self:factorial(ply:GetNWInt("AP", ix.config.Get("playeractionpoints", 3) + char:GetAttribute("ref", 0), 50 )), 25)
 						
@@ -816,7 +816,7 @@ if (CLIENT) then
 					
 					cam.Start3D2D( ply:GetNWVector( "StartPos", ply:GetPos() ) + trace.HitNormal, trace.HitNormal:Angle() + Angle( 90, 0, 0 ), 1 )
 					
-						surface.SetDrawColor( 94, 180, 255, 255)
+						surface.SetDrawColor( 255, 94, 94)
 						draw.NoTexture()
 						draw.Circle( 0, 0, (ix.config.Get("movementradius", 10) + char:GetSkill("athletic", 0)) * ply:GetNWInt("AP", ix.config.Get("playeractionpoints", 3) + char:GetAttribute("ref", 0)), 25 )
 						
@@ -844,10 +844,10 @@ if (CLIENT) then
 			if lclient:GetNWBool( "WarmUpBegin", false ) then
 				draw.SimpleText("Выберите цель через контекстное меню! Бой начнется через: "..  math.Round(lclient:GetNWFloat("Timeramount", 0) - CurTime(), 1) .." секунд.", "TBCWarmUpFont", w/2, h/5, Color(47, 175, 175), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
 				
-				draw.SimpleText("НАЧАЛО БОЯ!", "TBCWarmUpFont", w/2, h/7, Color(47, 175, 175), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("НАЧАЛО БОЯ!", "TBCWarmUpFont", w/2, h/7, Color(255, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
 			if lclient:GetNWBool( "MyTurn", false ) then
-				draw.SimpleText("Ваш ход", "TBCWarmUpFont", w/2, h/7, Color(191, 191, 191, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("Ваш ход", "TBCWarmUpFont", w/2, h/7, Color(153, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			
 				draw.SimpleText("[ЛОВКОСТЬ] Очки действий: ".. lclient:GetNWInt("AP", 3), "TBCSmallFont", w/2, h/1.25, Color(194, 191, 191), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				

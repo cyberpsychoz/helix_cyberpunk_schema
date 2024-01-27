@@ -3,7 +3,7 @@ AddCSLuaFile()
 ENT.Base = "base_ai"
 ENT.Type = "ai"
 
-ENT.PrintName = "Уличный торговец"
+ENT.PrintName = "Гражданин"
 ENT.Category = "Cyberpunk RED"
 ENT.Spawnable = true
 ENT.AdminOnly = true
@@ -12,6 +12,26 @@ ENT.Armor = 0
 ENT.Evasion = 20
 
 if SERVER then
+
+    function ENT:PlayWaveAnimationOnce()
+        -- Установка анимации "Wave" и воспроизведение ее один раз
+        self:ResetSequence("wave")
+        self:SetPlaybackRate(1)
+    
+        -- Установка таймера для сброса анимации после ее окончания
+        local animDuration = self:SequenceDuration()
+        timer.Simple(animDuration, function()
+            if IsValid(self) then
+                -- Добавьте небольшую задержку перед сбросом анимации
+                timer.Simple(0.1, function()
+                    if IsValid(self) then
+                        self:ResetSequence("idle")
+                        self:SetPlaybackRate(1)
+                    end
+                end)
+            end
+        end)
+    end    
 
     --[[
     local schedule = ai_schedule.New("MySchedule")
@@ -30,18 +50,17 @@ if SERVER then
         "models/humans/group01/male_78.mdl",
         "models/humans/group01/male_80.mdl",
         "models/humans/group01/male_49.mdl",
-        "models/barnes/refugee/female_01.mdl",
         "models/cyberpunk/group01/female_13.mdl",
         "models/cyberpunk/group01/female_04.mdl",
-        "models/barnes/refugee/female_44.mdl"
+        "models/humans/group01/male_127.mdl"
     }
 
     local cooldownTime = 15
     local nextInteractionTime = CurTime()
     local isFollowing = false
-    local randomModel = math.random(1, #models)
 
     function ENT:Initialize()
+        local randomModel = math.random(1, #models)
         self:SetModel(models[randomModel])
         self:SetHullType(HULL_HUMAN)
         self:SetHullSizeNormal()
@@ -51,16 +70,23 @@ if SERVER then
         self:DropToFloor()
 
         self:SetHealth(125)
-        self:CapabilitiesAdd(CAP_MOVE_GROUND)
+        --self:CapabilitiesAdd(CAP_MOVE_GROUND)
 
-        self:SetMoveType(MOVETYPE_STEP)
+        self:SetMoveType(MOVETYPE_NONE)
         self:SetSchedule(SCHED_FORCED_GO_RUN)
         
         self:SetUseType(SIMPLE_USE)
-        self:CapabilitiesAdd(CAP_OPEN_DOORS)
+        --self:CapabilitiesAdd(CAP_OPEN_DOORS)
         self:CapabilitiesAdd(CAP_ANIMATEDFACE)
         self:CapabilitiesAdd(CAP_TURN_HEAD)
         self:CapabilitiesAdd(CAP_USE)
+
+        -- Установка таймера для воспроизведения анимации "Wave" каждые 25 секунд
+        timer.Create("WaveAnimationTimer", 5, 0, function()
+            if IsValid(self) then
+                self:PlayWaveAnimationOnce()
+            end
+        end)
     end
 
     function ENT:Use(activator, client)
@@ -81,7 +107,16 @@ if SERVER then
         if character then
             local cha = character:GetSkill("ritorics", 0)
             if cha >= 5 then
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"Глянь на мои товары!\"")]]))
+                -- Разворот поворот
+                local direction = (client:GetPos() - self:GetPos()):GetNormalized()
+                self:SetAngles(direction:Angle())
+
+                --client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"Глянь на мои товары!\"")]]))
+                util.AddNetworkString("OpenDialoguePanel")
+                net.Start("OpenDialoguePanel")
+                net.Send(client)
+
+                --self:CapabilitiesRemove(CAP_MOVE_GROUND)
             else
                 local randomBad = math.random(1, #phrasesBad)
                 client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"%s\"")]], phrasesBad[randomBad]))
@@ -148,6 +183,64 @@ if SERVER then
 end
 
 if CLIENT then
+    net.Receive("OpenDialoguePanel", function(len)
+        local ply = LocalPlayer()
+        --print("TEST WINDOW DIALOGUE | Ply: ", ply)
+        if IsValid(ply) and ply:IsPlayer() then
+            gui.EnableScreenClicker(true)
+            --print("SUCCESS WINDOW DIALOGUE")
+            local frame = vgui.Create("DFrame")
+            frame:SetSize(600, 200) -- Увеличиваем размер окна
+            frame:SetPos(ScrW() / 2 - 300, ScrH() / 2 + 300) -- Центрируем окно
+            frame:SetTitle("")
+            frame:ShowCloseButton(false)
+            frame:SetDraggable(false)
+            frame:SetMouseInputEnabled(true)
+            frame.Paint = function(self, w, h)
+                draw.RoundedBox(8, 0, 0, w, h, Color(0, 0, 0, 200))
+            end
+    
+            local button1 = vgui.Create("DButton", frame)
+            button1:SetText("Торговать")
+            button1:SetSize(200, 40) -- Увеличиваем размер кнопки
+            button1:SetPos(frame:GetWide() / 2 - button1:GetWide() / 2, 20) -- Центрируем кнопку по горизонтали
+            --button1:SetFont("TTSupermolotNeue-Medium") -- Устанавливаем шрифт
+            button1.Paint = function(self, w, h)
+                -- Убираем окантовку у кнопки
+            end
+            button1.DoClick = function()
+                -- Код для обработки выбора "Торговать"
+            end
+    
+            local button2 = vgui.Create("DButton", frame)
+            button2:SetText("Говорить [Риторика 10]")
+            button2:SetSize(200, 40)
+            button2:SetTextColor(Color(255, 165, 0))
+            button2:SetPos(frame:GetWide() / 2 - button2:GetWide() / 2, 80) -- Размещаем кнопку ниже первой кнопки
+            --button2:SetFont("TTSupermolotNeue-Medium")
+            button2.Paint = function(self, w, h)
+                -- Убираем окантовку у кнопки
+            end
+            button2.DoClick = function()
+                -- Код для обработки выбора "Говорить [Риторика 10]"
+            end
+    
+            local button3 = vgui.Create("DButton", frame)
+            button3:SetText("Уйти")
+            button3:SetSize(200, 40)
+            button3:SetPos(frame:GetWide() / 2 - button3:GetWide() / 2, 140) -- Размещаем кнопку ниже второй кнопки
+            --button3:SetFont("TTSupermolotNeue-Medium")
+            button3.Paint = function(self, w, h)
+                -- Убираем окантовку у кнопки
+            end
+            button3.DoClick = function()
+                frame:Close()
+                gui.EnableScreenClicker(false)
+                --:CapabilitiesAdd(CAP_MOVE_GROUND)
+            end
+        end
+    end)
+    
     function ENT:OnPopulateEntityInfo(tooltip)
         surface.SetFont("ixIconsSmall")
 
@@ -163,8 +256,8 @@ if CLIENT then
     end
 end
 
-list.Set( "NPC", "ix_trader", {
-    Name = "Уличный торговец",
-    Class = "ix_trader",
+list.Set( "NPC", "ix_citizen", {
+    Name = "Гражданин",
+    Class = "ix_citizen",
     Category = "Cyberpunk RED"
 })

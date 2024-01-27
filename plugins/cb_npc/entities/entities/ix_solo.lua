@@ -41,7 +41,7 @@ if SERVER then
         self:SetHealth(220)
         self:CapabilitiesAdd(CAP_MOVE_GROUND)
 
-        self:SetMoveType(MOVETYPE_STEP)
+        self:SetMoveType(MOVETYPE_NONE)
         self:SetSchedule(SCHED_FORCED_GO_RUN)
         
         self:SetUseType(SIMPLE_USE)
@@ -85,6 +85,7 @@ if SERVER then
                 local randomGood = math.random(1, #phrasesGood)
                 client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Странный мужчина в кож..] говорит: \"%s\"")]], phrasesGood[randomGood]))
                 self:StartFollowing(client)
+                self:CapabilitiesRemove(CAP_MOVE_GROUND)
                 nextInteractionTime = CurTime() + cooldownTime
             else
                 local randomBad = math.random(1, #phrasesBad)
@@ -145,11 +146,23 @@ if SERVER then
                     ragdoll:Remove()
                 end
             end)
+        else
+            -- Если НПС еще жив, он начинает хуярить игрока
+            if attacker:IsPlayer() and self:GetNWBool("IsInCombat") and self:GetNWBool("MyTurn") then
+                local dmgrand = math.random(0, 10)
+                attacker:TakeDamage(dmgrand, self, self) -- НПС наносит игроку 10 единиц урона
+                for _, ply in ipairs(player.GetAll()) do
+                    if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
+                        ply:ChatPrint(self:GetName() .. " атакует " .. attacker:GetName() .. " нанося ему".. dmgrand .." урона!")
+                    end
+                end
+                self:SetNWBool("MyTurn", false)
+            end
         end
     
         return false
-    end            
-
+    end                   
+    
     function ENT:StartFollowing(client)
         if not isFollowing then -- Проверяем, не следует ли NPC уже за игроком
             isFollowing = true -- Устанавливаем флаг следования за игроком
@@ -173,6 +186,7 @@ if SERVER then
         isFollowing = false -- Сбрасываем флаг следования за игроком
         self:ClearSchedule() -- Очищаем расписание, чтобы прекратить следование
     end
+    
 end
 
 if CLIENT then
