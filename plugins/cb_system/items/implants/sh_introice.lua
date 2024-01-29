@@ -6,7 +6,7 @@ ITEM.width = 1
 ITEM.height = 1
 
 ITEM.attrboost = "int"
-ITEM.bonus = 50
+ITEM.bonus = 15
 
 ITEM.skillname = "netrunning"
 ITEM.skillbonus = 20

@@ -1,6 +1,6 @@
-ITEM.name = "Typewriter"
-ITEM.description = "A machine with keys for producing alphabetical characters, numerals, \nand typographical symbols one at a time on paper inserted round a roller."
-ITEM.model = "models/props_c17/cashregister01a.mdl"
+ITEM.name = "Компьютер AMARIA"
+ITEM.description = "Довольно старый, но все еще рабочий компьютер для программирования электронных книг. Благодаря нему в них можно загружать информацию."
+ITEM.model = "models/props/cs_office/amariapc.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.category = "Documents"

@@ -4,7 +4,7 @@ ENT.Type			= "anim"
 ENT.PrintName		= "Radio"
 ENT.Author			= "Bilwin"
 ENT.Instructions	= "Press E"
-ENT.Category 		= "HL2 RP"
+ENT.Category 		= "Cyberpunk RED"
 
 ENT.Spawnable = true
 ENT.AdminOnly = true

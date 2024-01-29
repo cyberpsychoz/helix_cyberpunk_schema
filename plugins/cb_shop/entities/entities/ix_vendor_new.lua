@@ -15,7 +15,7 @@ ENT.Base = "base_ai"
 ENT.Type = "ai"
 
 ENT.PrintName = "Продавец"
-ENT.Category = "Cyberpunk RED"
+ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 ENT.bNoPersist = true
@@ -443,9 +443,3 @@ function ENT:SetAnim()
 		self:ResetSequence(4)
 	end
 end
-
-list.Set( "NPC", "ix_trader", {
-    Name = "Уличный торговец",
-    Class = "ix_trader",
-    Category = "Cyberpunk RED"
-})

@@ -6,7 +6,7 @@ ITEM.width = 1
 ITEM.height = 1
 
 ITEM.attrboost = "int"
-ITEM.bonus = 21
+ITEM.bonus = 10
 
 ITEM.skillname = "coding"
 ITEM.skillbonus = 45

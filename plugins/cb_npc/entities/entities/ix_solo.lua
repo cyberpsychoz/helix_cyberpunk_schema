@@ -4,7 +4,7 @@ ENT.Base = "base_ai"
 ENT.Type = "ai"
 
 ENT.PrintName = "Неизвестный Соло"
-ENT.Category = "Cyberpunk RED"
+ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 ENT.Model = "models/cyberpunk/group03/male_09.mdl"

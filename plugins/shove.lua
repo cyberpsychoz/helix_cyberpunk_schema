@@ -7,7 +7,7 @@ PLUGIN.description = "A Command which gives the Overwatch the ability to knock p
 ix.config.Add("shoveTime", 20, "How long should a character be unconscious after being knocked out?", nil, {
     data = {min = 5, max = 60},
 })
-
+--[[
 ix.command.Add("shove", {
     description = "Knock someone out.",
     OnRun = function(self, ply)
@@ -38,3 +38,4 @@ ix.command.Add("shove", {
         end)
     end,
 })
+]]

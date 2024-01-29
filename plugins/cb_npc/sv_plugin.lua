@@ -1,65 +1,39 @@
 local PLUGIN = PLUGIN
-local meta = FindMetaTable("Player")
-local apiKey = "sk-************************************************" -- Your OpenAI API key here
 
-meta.sendGPTRequest = function(this, text)
-    HTTP({
-        url = 'https://chat.geekgpt.org/',
-        type = 'application/json',
-        method = 'post',
-        headers = {
-            ['Content-Type'] = 'application/json',
-            ['Authorization'] = 'Bearer ' .. apiKey,
-        },
-        body = [[{
-            "model": "gpt-3.5-turbo",
-            "messages": [{"role": "user", "content": "]] .. text .. [["}],
-            "max_tokens": 50,
-            "temperature": 0.7
-        }]],
-        success = function(code, body, headers)
-            local response = util.JSONToTable(body)
-            
-            if response and response.choices and response.choices[1] and response.choices[1].message and response.choices[1].message.content then
-                local gptResponse = response.choices[1].message.content
-                this:ChatPrint("[GPT]: "..gptResponse)
-            else
-                this:ChatPrint((response and response.error and response.error.message) and "Error! "..response.error.message or 'Unknown error!')
-            end
-        end,
-        failed = function(err)
-            ErrorNoHalt('HTTP Error: '..err)
-        end
-    })
-end
-
-hook.Add("PlayerSay", "PlayerChatHandler", function(ply, text, team)
-    local cmd = string.sub(text,1,4)
-    local txt = string.sub(text,5)
-    if cmd == "/gpt" then
-        ply:ChatPrint("One moment, please...")
-        ply:sendGPTRequest(txt)
-        return ""
-    end
+concommand.Add("conflict_dev_npc_printsequences", function(ply)
+   if not ( ply:IsDeveloper() ) then return end
+   
+   local ent = ply:GetEyeTraceNoCursor().Entity
+   
+   if ( ent and IsValid(ent) and ent:IsNPC() ) then
+      for i = 0, ent:GetSequenceCount() do
+         print(i.." - "..ent:GetSequenceName(i))
+      end
+   end
 end)
 
-function PLUGIN:OnNPCKilled(ent, ply)
-    local config = self.config[ent:GetClass()]
-
-    if not ( config and config.items ) then
-        return
-    end
-
-    local randomChance = math.random(1, 100)
-    if not ( randomChance >= config.rarity ) then
-        return
-    end
-
-    if ( config.randomItems ) then
-        ix.item.Spawn(table.Random(config.items), ent:GetPos() + Vector(0, 0, 16), nil, ent:GetAngles())
-    else
-        for k, v in pairs(config.items) do
-            ix.item.Spawn(v, ent:GetPos() + Vector(0, 0, 16), nil, ent:GetAngles())
-        end
-    end
-end
+ix.command.Add("NPCForceAnim", {
+   description = "Force an NPC to play an animation.",
+   arguments = {ix.type.string, bit.bor(ix.type.number, ix.type.optional), bit.bor(ix.type.number, ix.type.optional)},
+   OnRun = function(_, ply, anim, time, timereset)
+      local ent = ply:GetEyeTraceNoCursor().Entity
+      
+      if ( ent and IsValid(ent) and ent:IsNPC() ) then
+         if ( time ) then
+            timer.Simple(time or 2, function()
+               ent:ResetSequence(tostring(anim))
+            end)
+            
+            timer.Simple(timereset or 1, function()
+               ent:ExitScriptedSequence()
+            end)
+         else
+            ent:ResetSequence(tostring(anim))
+            timer.Simple(10, function()
+               ent:ExitScriptedSequence()
+            end)
+         end
+      end
+   end
+   
+})

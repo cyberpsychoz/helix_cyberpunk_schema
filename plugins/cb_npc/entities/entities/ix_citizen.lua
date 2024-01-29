@@ -4,7 +4,7 @@ ENT.Base = "base_ai"
 ENT.Type = "ai"
 
 ENT.PrintName = "Гражданин"
-ENT.Category = "Cyberpunk RED"
+ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 --ENT.bNoPersist = true

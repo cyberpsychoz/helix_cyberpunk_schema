@@ -6,7 +6,7 @@ AddCSLuaFile( "shared.lua" )
 include( "shared.lua" )
 
 function ENT:Initialize()
-	self:SetModel("models/props_lab/citizenradio.mdl")
+	self:SetModel("models/mark2580/gtav/mp_office_03c/warehouse_small/radio_01.mdl")
 	self:PhysicsInit(SOLID_VPHYSICS)
 	self:SetMoveType(MOVETYPE_VPHYSICS)
 	self:SetSolid(SOLID_VPHYSICS)

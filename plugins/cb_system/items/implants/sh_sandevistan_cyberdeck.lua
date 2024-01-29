@@ -8,5 +8,5 @@ ITEM.bonus = 20
 ITEM.attrboost = "int"
 ITEM.skillbonus = 50
 ITEM.skillname = "netrunning"
-ITEM.basechance = 99
+ITEM.basechance = 20 -- изначально 99
 ITEM.bodypart = "Операционная система"

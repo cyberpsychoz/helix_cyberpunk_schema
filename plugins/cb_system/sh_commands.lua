@@ -361,3 +361,25 @@ ix.command.Add("hp", {
         client:PrintMessage(HUD_PRINTTALK, "Ваше текущее количество HP: " .. currentHP)
     end
 })
+
+
+--[[
+concommand.Add("trace_test", function(ply)
+    local target = ply:GetCharacter():GetData("target", ent)
+    local targetPos = target:GetPos()
+    local plyPos = ply:GetPos()
+    local direction = (targetPos - plyPos):GetNormalized()
+
+    local trace = util.TraceHull({
+        start = plyPos,
+        endpos = plyPos + direction * weaponRange,
+        filter = ply,
+        mask = MASK_SHOT_HULL
+        mins = Vector(-10, -10, -10), -- Размеры "коробки" для трассировки
+        maxs = Vector(10, 10, 10)
+    })
+
+
+
+end)
+]]

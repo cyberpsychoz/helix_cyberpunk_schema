@@ -6,10 +6,10 @@ ITEM.width = 1
 ITEM.height = 1
 
 ITEM.attrboost = "int"
-ITEM.bonus = 5
+ITEM.bonus = 2
 
 ITEM.skillname = "attention"
-ITEM.skillbonus = 25
+ITEM.skillbonus = 13
 
 ITEM.basechance = 50
 ITEM.bodypart = "Лобная доля"

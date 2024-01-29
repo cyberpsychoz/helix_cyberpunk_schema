@@ -3,6 +3,15 @@ FACTION.description = "Начальная фракция"
 FACTION.isDefault = true
 FACTION.color = Color(168, 218, 220)
 FACTION.Ranks = {
+    [1] = {"Непрошитый", nil, CLASS_REPNO},
+    [2] = {"Обслуживающий", nil, CLASS_REPCLEAN},
+    [3] = {"Охранный", nil, CLASS_REPWAR},
+    [4] = {"Медицинский", nil, CLASS_REPMED},
+    [5] = {"Научный", nil, CLASS_REPSMART}
+    -- [6] = {"Sergeant Major", "icon16/medal_gold_1.png", CLASS_SENIOR, true}
+}
+--[[
+FACTION.Ranks = {
     [1] = {"Непрошитый", "icons/nothing.png", CLASS_REPNO},
     [2] = {"Обслуживающий", "icons/clean.png", CLASS_REPCLEAN},
     [3] = {"Охранный", "icons/war.png", CLASS_REPWAR},
@@ -10,7 +19,7 @@ FACTION.Ranks = {
     [5] = {"Научный", "icons/scine.png", CLASS_REPSMART}
     -- [6] = {"Sergeant Major", "icon16/medal_gold_1.png", CLASS_SENIOR, true}
 }
-
+]]
 FACTION.models = {
     "models/cyberpunk/group01/female_01.mdl",
     "models/cyberpunk/group01/female_02.mdl",

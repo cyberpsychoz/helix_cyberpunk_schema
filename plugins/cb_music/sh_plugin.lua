@@ -47,8 +47,6 @@ ix.Music = {
 	{ "cyberpunkmusic/vangelis.mp3", 410, MUSIC_MENU, "Vangelis" },
 	{ "cyberpunkmusic/ofortuna.mp3", 170, MUSIC_NOPLAY, "FORTUNA" },
 	{ "cyberpunkmusic/vangelis-one-more-kiss-dear.mp3", 237, MUSIC_NOPLAY, "One more kiss" },
-	{ "cyberpunkmusic/vangelis-blade-runner-end-titles.mp3", 280, MUSIC_AMBIENT, "End" },
-	--{"CyberpunkMusic/vangelis-blush-response.mp3", 345, MUSIC_AMBIENT, "Blush Responce" },
 	{ "cyberpunkmusic/vangelis-damask-rose.mp3", 150, MUSIC_AMBIENT, "Damask Rose" },
 	{ "cyberpunkmusic/vangelis-memories-of-green.mp3", 305, MUSIC_AMBIENT, "Memories of Green" },
 	{ "cyberpunkmusic/mesa.mp3", 291, MUSIC_AMBIENT, "Mesa 2049" },
@@ -57,11 +55,13 @@ ix.Music = {
 	{ "cyberpunkmusic/p-t-adamczyk-scavengers.mp3", 65, MUSIC_COMBAT, "Cyberpunk 2" },
 	{ "cyberpunkmusic/p-t-adamczyk-scavenger-hunt.mp3", 65, MUSIC_COMBAT, "Cyberpunk 3" },
 	{ "cyberpunkmusic/p-t-adamczyk-the-rebel-path.mp3", 65, MUSIC_COMBAT, "Cyberpunk 4" },
-	{ "cyberpunkmusic/hl2_song20_submix0.mp3", 65, MUSIC_COMBAT, "CP Violation" },
+	{ "cyberpunkmusic/hell.mp3", 65, MUSIC_COMBAT, "Cyberpunk 5" },
 	{ "cyberpunkmusic/stingers/hl1_stinger_song7.mp3", 23, MUSIC_STINGER, "Apprehensive" },
 	{ "cyberpunkmusic/stingers/hl1_stinger_song8.mp3", 9, MUSIC_STINGER, "Bass String" },
 	{ "cyberpunkmusic/stingers/hl1_stinger_song16.mp3", 16, MUSIC_STINGER, "Scared Confusion" },
-	{ "cyberpunkmusic/stingers/hl1_stinger_song27.mp3", 17, MUSIC_STINGER, "Dark Piano" }
+	{ "cyberpunkmusic/stingers/hl1_stinger_song27.mp3", 17, MUSIC_STINGER, "Dark Piano" },
+	{ "cyberpunkmusic/vangelis-blade-runner-end-titles.mp3", 280, MUSIC_STINGER, "End" },
+	{ "cyberpunkmusic/vangelis-blush-response.mp3", 345, MUSIC_STINGER, "Blush Responce" },
 
 }
 

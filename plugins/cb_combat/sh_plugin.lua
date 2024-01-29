@@ -188,23 +188,38 @@ if (SERVER) then
 			local targetPos = target:GetPos()
 			local plyPos = ply:GetPos()
 			local direction = (targetPos - plyPos):GetNormalized()
-	
-			local trace = util.TraceLine({
+
+			-- ОТРИСОВКА БЛЯДСКОГО ЧИПИЧУПИКА
+			local trace = util.TraceHull({
 				start = plyPos,
 				endpos = plyPos + direction * weaponRange,
-				filter = ply
+				filter = ply,
+				mask = MASK_SHOT_HULL,
+				mins = Vector(-10, -10, -10), -- Размеры "коробки" для трассировки (максимальные нахуй)
+				maxs = Vector(10, 10, 10)
 			})
-	
-			if trace.HitSky then
-				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Ваше оружие не направлено в сторону цели или что-то не позволяет вам попасть по ней!")]]))
-				return
-			elseif not trace.Hit or trace.HitPos:Distance(plyPos) > weaponRange then
-				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Ваше оружие имеет недостаточный радиус для поражения цели!")]]))
-				return
-			elseif trace.Hit and (not trace.Entity:IsPlayer() and not trace.Entity:IsNPC())  then
-			    ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Цель находится за укрытием!")]]))
-			    return
+
+			--ОТРИСОВКА БЛЯДСКОЙ ЛИНИИ
+			if(not IsValid(trace.Entity)) then
+				trace = util.TraceLine({
+					start = plyPos,
+					endpos = plyPos + direction * weaponRange,
+					filter = ply,
+					mask = MASK_SHOT_HULL
+				})
 			end
+
+			local ent = trace.Entity
+			local pos = trace.HitPos
+			
+			if not IsValid(ent) then
+				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Невозможно произвести выстрел: цель находится за укрытием или вам не хватает дальности стрельбы!")]]))
+				return
+			end
+			
+			-- Дебаг цели
+			--print("Цель: ", tostring(ent))
+			--print("Позиция: ", tostring(pos))
 
 			-- Передача линии на клиент дебаг
 			--util.AddNetworkString("DrawLine")
@@ -715,13 +730,13 @@ if (CLIENT) then
 
 	local w, h = ScrW(), ScrH()
 	surface.CreateFont( "TBCWarmUpFont", {
-	font = "New_Zelek",
+	font = "TTSupermolotNeue-Medium",
 	extended = false,
 	size = 20 * h/500,
-	weight = 500,
+	weight = 1200,
 	blursize = 0,
 	scanlines = 0,
-	antialias = true,
+	--antialias = true,
 	underline = false,
 	italic = false,
 	strikeout = false,
@@ -735,39 +750,14 @@ if (CLIENT) then
 	local w, h = ScrW(), ScrH()
 	surface.CreateFont( "TBCSmallFont", {
 	font = "TTSupermolotNeue-Medium",
-	extended = false,
 	size = 14 * h/500,
 	weight = 500,
-	blursize = 0,
-	scanlines = 0,
-	antialias = false,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
 	} )
 	
 	local w, h = ScrW(), ScrH()
 	surface.CreateFont( "TBCTinyFont", {
 	font = "TTSupermolotNeue-Medium",
-	extended = false,
 	size = 7 * h/500,
-	weight = 500,
-	blursize = 0,
-	scanlines = 0,
-	antialias = false,
-	underline = false,
-	italic = false,
-	strikeout = false,
-	symbol = false,
-	rotary = false,
-	shadow = false,
-	additive = false,
-	outline = false,
 	} )
 	
 	function PLUGIN:factorial(n)
@@ -844,14 +834,14 @@ if (CLIENT) then
 			if lclient:GetNWBool( "WarmUpBegin", false ) then
 				draw.SimpleText("Выберите цель через контекстное меню! Бой начнется через: "..  math.Round(lclient:GetNWFloat("Timeramount", 0) - CurTime(), 1) .." секунд.", "TBCWarmUpFont", w/2, h/5, Color(47, 175, 175), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
 				
-				draw.SimpleText("НАЧАЛО БОЯ!", "TBCWarmUpFont", w/2, h/7, Color(255, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("НАЧАЛО БОЯ!", "TBCWarmUpFont", w/2, h/7, Color(47, 175, 175), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			end
 			if lclient:GetNWBool( "MyTurn", false ) then
-				draw.SimpleText("Ваш ход", "TBCWarmUpFont", w/2, h/7, Color(153, 0, 0), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("Ваш ход", "TBCWarmUpFont", w/2, h/7, Color(47, 175, 175), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 			
-				draw.SimpleText("[ЛОВКОСТЬ] Очки действий: ".. lclient:GetNWInt("AP", 3), "TBCSmallFont", w/2, h/1.25, Color(194, 191, 191), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
+				draw.SimpleText("Очки действий: ".. lclient:GetNWInt("AP", 3), "TBCSmallFont", w/2, h/1.25, Color(194, 191, 191), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 				
-				draw.SimpleText("[РЕАКЦИЯ] Времени осталось: "..  math.Round(lclient:GetNWFloat("TurnTimer", 0) - CurTime(), 1) .." секунд.", "TBCWarmUpFont", w/2, h/5, Color(191, 191, 191, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
+				draw.SimpleText("Времени отреагировать: "..  math.Round(lclient:GetNWFloat("TurnTimer", 0) - CurTime(), 1) .." секунд.", "TBCWarmUpFont", w/2, h/5, Color(191, 191, 191, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)	
 			end
 			
 			local walkBind = input.LookupBinding("+walk") or "ALT"

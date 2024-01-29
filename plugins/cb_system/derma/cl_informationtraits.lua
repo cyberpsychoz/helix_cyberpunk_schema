@@ -6,7 +6,7 @@ do
 
 		if (character) then
 			PANEL.traits = PANEL:Add("ixCategoryPanel")
-			PANEL.traits:SetText("Traits")
+			PANEL.traits:SetText("Черты")
 			PANEL.traits:Dock(TOP)
 			PANEL.traits:DockMargin(0, 0, 0, 8)
 
