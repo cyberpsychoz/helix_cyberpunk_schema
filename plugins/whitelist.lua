@@ -1,9 +1,22 @@
 local PLUGIN = PLUGIN
 
 PLUGIN.name = "Whitelist"
-PLUGIN.author = "wildflowericecoffee"
+PLUGIN.author = "Переделан крыжовником."
 PLUGIN.description = "Adds a server whitelist"
---[[
+PLUGIN.readme = [[
+This plugin adds a configurable server whitelist, letting only the players you allow to connect to your server.
+The whitelist is disabled by default, to turn it on simply go to the "config" tab in-game.
+]]
+PLUGIN.license = [[
+Copyright 2021 wildflowericecoffee
+
+Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+]]
+
 ix.config.Add("whitelistEnabled", false, "Enables the server whitelist.", nil, {
     category = "Whitelist"
 })
@@ -21,13 +34,13 @@ if SERVER then
         local steamID = util.SteamIDFrom64(steamID64)
 
         if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
-            return false, "Sorry, you are not whitelisted for " .. GetHostName()
+            return false, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U"
         end
     end
 
     function PLUGIN:PlayerAuthed(client, steamID, uniqueID)
         if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
-            game.KickID(uniqueID, "Sorry, you are not whitelisted for " .. GetHostName())
+            game.KickID(uniqueID, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U")
         end
     end
 end
@@ -43,7 +56,7 @@ ix.command.Add("WhitelistAdd", {
         end
 
         if PLUGIN.allowed[steamID] then
-            return "This SteamID is already whitelisted"
+            return "УЖЕ СУЩЕСТВУЕТ!"
         else
             PLUGIN.allowed[steamID] = true
 
@@ -97,4 +110,3 @@ ix.command.Add("WhitelistAddAll", {
         return "Added all current players to the whitelist"
     end
 })
-]]

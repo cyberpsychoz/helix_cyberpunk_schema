@@ -6,3 +6,4 @@ ITEM.height = 1
 ITEM.category = "Medicine"
 ITEM.useSound = "items/medshot4.wav"
 ITEM.healing = "blindness"
+ITEM.price = 1000

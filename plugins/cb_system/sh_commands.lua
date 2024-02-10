@@ -362,6 +362,26 @@ ix.command.Add("hp", {
     end
 })
 
+ix.command.Add("CharGetWeapon", {
+	adminOnly = true,
+    syntax = "<имя персонажа>",
+    description = "Показывает информацию есть ли оружие у персонажа.",
+    arguments = {ix.type.player},
+    OnRun = function(self, client, target)
+        local character = target:GetCharacter()
+        --local character1 = client:GetCharacter()
+        if character then
+            local weaponchar = character:GetData("weapon", "None")
+            --local weapon1 = character1:GetData("weapon", nil)
+            print("=== ЭКСТРЕМАЛЬНЫЙ ДЕБАГ ОРУЖИЯ===")
+            print(weaponchar)
+            --print("=== ВАШЕ ОРУЖИЕ ===")
+            --printTable(weapon1)
+        else
+            print("Персонаж с таким именем не найден.")
+        end
+    end
+})
 
 --[[
 concommand.Add("trace_test", function(ply)

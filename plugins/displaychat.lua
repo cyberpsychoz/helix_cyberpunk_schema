@@ -60,9 +60,9 @@ function PLUGIN:ShouldChatMessageDisplay(client, messageInfo)
 		return false
 	end
 
-	if (!ix.chatLanguages.IsChatTypeValid(messageInfo.chatType)) then
-		return false
-	end
+	--if (!ix.chatLanguages.IsChatTypeValid(messageInfo.chatType)) then
+	--	return false
+	--end
 
 	if (LocalPlayer():EyePos():DistToSqr(client:EyePos()) >= 300 * 300) then
 		return false

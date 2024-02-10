@@ -152,11 +152,7 @@ if (SERVER) then
 			local weapon = ply:GetCharacter():GetData("weapon")
 			--Дебаг
 			--PrintTable(weapon)
-			if not weapon then
-				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "У вас нет оружия, вы атакуете голыми руками!")]]))
-				return
-			end
-	
+
 			-- Проверка на нахождение в бою
 			if not ply:GetNWBool("IsInCombat", false) then
 				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Вы не можете атаковать, пока не находитесь в бою!")]]))
@@ -175,16 +171,29 @@ if (SERVER) then
 				ply:SendLua(string.format([[chat.AddText(Color(194, 103, 103), "Недостаточно очков действия для атаки!")]]))
 				return
 			end
-	
-			-- Вычисление урона
-			local charskill = ply:GetCharacter():GetSkill(weapon.skill) or 0
-			--print("Дебаг урона оружия", weapon.damage)
-			--print("Дебаг скилла оружия:", charskill)
-			local dmgskill = charskill + weapon.damage
-			local totaldamage = math.random(0, dmgskill)
+			
+			-- Проверка на наличие урона от оружия
+			local charskill = 0
+			local dmgskill = 0
+			local totaldamage = 0
+			if weapon then
+				charskill = ply:GetCharacter():GetSkill(weapon.skill) or 0
+				dmgskill = (charskill + weapon.damage)
+				totaldamage = math.random(0, dmgskill)
+			else
+				dmgskill = 1
+				totaldamage = 1
+				charskill = 1
+			end
 	
 			-- Проверка дальности атаки
-			local weaponRange = weapon.destination or 100
+			local weaponRange = 0
+			if weapon then 
+				weaponRange = weapon.destination
+			else
+				weaponRange = 100
+			end
+			
 			local targetPos = target:GetPos()
 			local plyPos = ply:GetPos()
 			local direction = (targetPos - plyPos):GetNormalized()
@@ -235,36 +244,138 @@ if (SERVER) then
 			local targetEvasionSkill = evasionSkill
 			local randomHit = math.random(0, attackerShootingSkill)
 			local randomMiss = math.random(0, targetEvasionSkill)
-			local targetArmorClass = isNPC and target.Armor or target:GetData("armorclass", 0)
-			local weaponPenetration = weapon.penetration or 0
+			local targetArmorClass = isNPC and target.Armor or target:GetCharacter():GetData("armorclass", 0)
+			local weaponPenetration = 0
+			if weapon then
+				weaponPenetration = weapon.penetration
+			else
+				weaponPenetration = 0
+			end
 			--Дебаг
 			--print("Пенетрация: ", weaponPenetration)
 			--print("Гейская: ", targetArmorClass)
-			
-			if randomHit >= randomMiss then
-				if weaponPenetration >= targetArmorClass then
-					if isNPC then
-						ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+
+			-- АТАКА ДЛЯ БЛИЖНИКОВ
+			if not weapon then
+				--print("АТАКА БЛИЖНИКА")
+				charphy = ply:GetCharacter():GetAttribute("phy") or 0
+				charref = ply:GetCharacter():GetAttribute("ref") or 0
+				charskill = ply:GetCharacter():GetSkill("hand_to_hand_combat") or 0
+				totaldamage = math.random(0, charskill) + charphy
+				if charref >= randomMiss then
+					if charskill / 15 >= targetArmorClass then
+						if isNPC then
+							ix.chat.Send(ply, "me", " атакует без оружия " .. target.PrintName .. " и наносит ему " .. totaldamage .. ".")
+						else
+							ix.chat.Send(ply, "me", " атакует без оружия " .. target:GetName() .. " и наносит ему " .. totaldamage .. ".")
+						end
+						target:TakeDamage(totaldamage, ply, ply)
+						ply:SetNWInt("AP", AP - 1)
+						return
 					else
-						ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+						if isNPC then
+							ix.chat.Send(ply, "me", " атакует без оружия " .. target.PrintName .. " и промахивается.")
+						else
+							ix.chat.Send(ply, "me", " атакует без оружия " .. target:GetName() .. " и промахивается.")
+						end
+						ply:SetNWInt("AP", AP - 1)
+						return
+					end
+				else
+					if isNPC then
+						ix.chat.Send(ply, "me", " атакует без оружия " .. target.PrintName .. " и промахивается.")
+					else
+						ix.chat.Send(ply, "me", " атакует без оружия " .. target:GetName() .. " и промахивается.")
+					end
+					ply:SetNWInt("AP", AP - 1)
+					return
+				end
+			end
+
+			-- АТАКА ДЛЯ НЕТРАННЕРОВ
+			if weapon then
+				if weapon.skill == "netrunning" then
+					--print("АТАКА НЕТРАНЕРА")
+					charint = ply:GetCharacter():GetAttribute("int") or 0
+					totaldamage = math.random(0, dmgskill) + charint
+					if isNPC then
+						ix.chat.Send(ply, "me", " взламывает " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+					else
+						ix.chat.Send(ply, "me", " взламывает " .. target:GetName() .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
 					end
 					target:TakeDamage(totaldamage, ply, ply)
 					ply:SetNWInt("AP", AP - 1)
-				else
-					if isNPC then
-						ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и пуля рикошетит!")
+					return
+				end
+			end
+
+			-- АТАКА ДЛЯ МИЛИШНИКОВ
+			if weapon then
+				if weapon.skill == "melee_weapon" then	
+					charphy = ply:GetCharacter():GetAttribute("phy") or 0
+					chardex = ply:GetCharacter():GetAttribute("dex") or 0
+					totaldamage = math.random(0, dmgskill) + charphy
+					if chardex >= randomMiss then
+						if charphy / 5 >= targetArmorClass then
+							if isNPC then
+								ix.chat.Send(ply, "me", " рубит " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+							else
+								ix.chat.Send(ply, "me", " рубит " .. target:GetName() .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+							end
+							target:TakeDamage(totaldamage, ply, ply)
+							ply:SetNWInt("AP", AP - 1)
+							return
+						else
+							if isNPC then
+								ix.chat.Send(ply, "me", " рубит " .. target.PrintName .. " и промахивается.")
+							else
+								ix.chat.Send(ply, "me", " рубит " .. target:GetName() .. " и промахивается.")
+							end
+							ply:SetNWInt("AP", AP - 1)
+							return
+						end
 					else
-						ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и пуля рикошетит!")
+						if isNPC then
+							ix.chat.Send(ply, "me", " рубит " .. target.PrintName .. " и промахивается.")
+						else
+							ix.chat.Send(ply, "me", " рубит " .. target:GetName() .. " и промахивается.")
+						end
+						ply:SetNWInt("AP", AP - 1)
+						return
 					end
-					ply:SetNWInt("AP", AP - 1)
+					return -- несанкционированный ретёрн
 				end
-			else
-				if isNPC then
-					ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и промахивается!")
-				else
-					ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и промахивается!")
+			end
+
+			-- АТАКА ДЛЯ СТРЕЛКОВ
+			if weapon then
+				if weapon.skill == "pistols" or "rifles" or "energy_weapons" then
+					if randomHit >= randomMiss then
+						if weaponPenetration >= targetArmorClass then
+							if isNPC then
+								ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+							else
+								ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и наносит ему " .. totaldamage .. ".")
+							end
+							target:TakeDamage(totaldamage, ply, ply)
+							ply:SetNWInt("AP", AP - 1)
+						else
+							if isNPC then
+								ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. ", но пуля не пробивает броню!")
+							else
+								ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. ", но пуля не пробивает броню!")
+							end
+							ply:SetNWInt("AP", AP - 1)
+						end
+					else
+						if isNPC then
+							ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. " и промахивается!")
+						else
+							ix.chat.Send(ply, "me", " атакует " .. target:GetName() .. " c помощью " .. weapon.name .. " и промахивается!")
+						end
+						ply:SetNWInt("AP", AP - 1)
+					end
 				end
-				ply:SetNWInt("AP", AP - 1)
 			end
 		end
 	end)

@@ -10,5 +10,5 @@ ITEM.price = 0
 ITEM.weaponSkill = "pistols"
 ITEM.weaponDestination = 30000
 ITEM.weaponEffect = nil
-ITEM.weaponPenetration = 0
-ITEM.weaponDamage = 6
+ITEM.weaponPenetration = 2
+ITEM.weaponDamage = 10

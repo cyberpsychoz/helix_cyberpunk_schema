@@ -11,4 +11,4 @@ ITEM.weaponSkill = "netrunning"
 ITEM.weaponDestination = 180180
 ITEM.weaponEffect = nil
 ITEM.weaponPenetration = 4
-ITEM.weaponDamage = 75
+ITEM.weaponDamage = 65

@@ -101,7 +101,7 @@ if SERVER then
     function ENT:OnTakeDamage(dmginfo)
         local attacker = dmginfo:GetAttacker()
         local damage = dmginfo:GetDamage()
-        print(damage)
+        --print(damage)
     
         self:SetHealth(self:Health() - damage)
         local phrases = {

@@ -1,10 +1,10 @@
 ITEM.name = "Компьютер AMARIA"
-ITEM.description = "Довольно старый, но все еще рабочий компьютер для программирования электронных книг. Благодаря нему в них можно загружать информацию."
+ITEM.description = "Довольно старый, но все еще рабочий компьютер для программирования электронных книг. Благодаря ему в них можно загружать информацию."
 ITEM.model = "models/props/cs_office/amariapc.mdl"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.category = "Documents"
-ITEM.price = 250
+ITEM.price = 2000
 
 ITEM.functions.Use = {
 	name = "Use",

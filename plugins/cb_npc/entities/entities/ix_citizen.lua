@@ -9,10 +9,11 @@ ENT.Spawnable = true
 ENT.AdminOnly = true
 --ENT.bNoPersist = true
 ENT.Armor = 0
-ENT.Evasion = 20
+ENT.Evasion = 10
 
 if SERVER then
 
+    --[[
     function ENT:PlayWaveAnimationOnce()
         -- Установка анимации "Wave" и воспроизведение ее один раз
         self:ResetSequence("wave")
@@ -32,7 +33,7 @@ if SERVER then
             end
         end)
     end    
-
+    ]]
     --[[
     local schedule = ai_schedule.New("MySchedule")
 
@@ -69,7 +70,7 @@ if SERVER then
         self:SetSolid(SOLID_BBOX)
         self:DropToFloor()
 
-        self:SetHealth(125)
+        self:SetHealth(55)
         --self:CapabilitiesAdd(CAP_MOVE_GROUND)
 
         self:SetMoveType(MOVETYPE_NONE)
@@ -82,11 +83,11 @@ if SERVER then
         self:CapabilitiesAdd(CAP_USE)
 
         -- Установка таймера для воспроизведения анимации "Wave" каждые 25 секунд
-        timer.Create("WaveAnimationTimer", 5, 0, function()
-            if IsValid(self) then
-                self:PlayWaveAnimationOnce()
-            end
-        end)
+        --timer.Create("WaveAnimationTimer", 5, 0, function()
+        --    if IsValid(self) then
+        --        self:PlayWaveAnimationOnce()
+        --    end
+        --end)
     end
 
     function ENT:Use(activator, client)
@@ -131,7 +132,7 @@ if SERVER then
     function ENT:OnTakeDamage(dmginfo)
         local attacker = dmginfo:GetAttacker()
         local damage = dmginfo:GetDamage()
-        print(damage)
+        --print(damage)
     
         self:SetHealth(self:Health() - damage)
         local phrases = {

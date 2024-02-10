@@ -97,7 +97,7 @@ ITEM.functions.Use = {
 --[[
 ITEM.functions.DebugApplyImplant = {
     name = "Отладка: Применить имплант на себе",
-    icon = "icons/arrow_upward.png",
+    icon = "icon16/arrow_upward.png",
     OnRun = function(item)
         local client = item.player
         local name = item.name
