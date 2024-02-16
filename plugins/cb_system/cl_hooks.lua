@@ -1,3 +1,18 @@
+--дебажим
+concommand.Add("playdeathsound", function(ply, cmd, args)
+    local soundPath = args[1] or "cyberpunksounds/death.mp3"
+	local deathSounds = {
+        "ambient/levels/labs/electric_explosion1.wav",
+        "ambient/levels/labs/electric_explosion2.wav",
+        "ambient/levels/labs/electric_explosion3.wav",
+        "ambient/levels/labs/electric_explosion4.wav",
+        "ambient/levels/labs/electric_explosion5.wav"
+    }
+
+    local randomSound = table.Random(deathSounds)
+    surface.PlaySound(randomSound)
+	surface.PlaySound(soundPath)
+end)
 --[[
 
 function PLUGIN:OnCharacterMenuCreated( PANEL )

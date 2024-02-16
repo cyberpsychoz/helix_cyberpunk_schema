@@ -82,6 +82,8 @@ PLUGIN.IgnoredNPCs = { -- NPCs that you don't enter turn based conbat with, most
 	['env_fire'] = true,
 }
 
+
+
 function PLUGIN:StartCommand( ply, cmd )
 	if ply:GetNWBool( "IsInCombat", false ) then
 		if ply:GetNWBool( "WarmUp", false) or !ply:GetNWBool( "MyTurn", false) then
@@ -98,11 +100,13 @@ function PLUGIN:BeginWarmUp( entity )
     self.Data[4] = 0 -- NPC counter
     self.Data[5] = 6 -- turn pointer
     if entity:GetClass() == "player" then
-        entity:SetNWBool( "IsInCombat", true )
-        entity:SetNWBool( "WarmUpBegin", true )
-        --entity:SetMaterial("models/shiny") -- just for testing
-        entity:SetNWBool( "WarmUp", true) 
-        table.insert( self.Data, entity )
+
+		entity:SetNWBool( "IsInCombat", true )
+		entity:SetNWBool( "WarmUpBegin", true )
+		--entity:SetMaterial("models/shiny") -- just for testing
+		entity:SetNWBool( "WarmUp", true) 
+		table.insert( self.Data, entity )
+
     elseif entity:IsNPC() then
         entity:SetNWBool( "IsInCombat", true )
         --entity:SetMaterial("models/shiny") -- just for testing
@@ -118,8 +122,14 @@ if (SERVER) then
             --print("ПРОВЕРКА ХУКА, ХУКА БОЯ!")
             --ply:ChatPrint("ПРОВЕРКА")
             --PLUGIN:BeginWarmUp(ply)
+
+			--if ply:GetMoveType() == 8 then -- MOVETYPE_NOCLIP
+			--	return -- Пропускаем начало боя для игроков в режиме обсервера
+			--end
+
             for k, v in pairs(ents.GetAll()) do
                 if v:GetClass() == "player" or v:IsNPC() and PLUGIN.IgnoredNPCs[v:GetClass( )] == nil then
+
                     timer.Simple( 0.01, function()
                         local trace = util.TraceLine{
                             start = ply:EyePos(),
@@ -359,6 +369,7 @@ if (SERVER) then
 							end
 							target:TakeDamage(totaldamage, ply, ply)
 							ply:SetNWInt("AP", AP - 1)
+							--ply:EmitSound("weapons/smg1/smg1_fire1.wav")
 						else
 							if isNPC then
 								ix.chat.Send(ply, "me", " атакует " .. target.PrintName .. " c помощью " .. weapon.name .. ", но пуля не пробивает броню!")
@@ -392,7 +403,7 @@ if (SERVER) then
 			client:SetNWBool("TryingToLeave", false)			
 		end)
 	end
-	
+
 	function PLUGIN:PlayerSpawn(client)
 		if !table.IsEmpty(self.TotalCombats) then 
 			for k, v in pairs(self.TotalCombats) do
@@ -517,7 +528,7 @@ if (SERVER) then
 												}
 												if !trace.Hit then
 													if ent:EyePos():Distance( v2:EyePos() ) <= ix.config.Get("radius", 500) then
-														if ent:GetClass() == "player" and ent:Alive() then
+														if ent:GetClass() == "player" and ent:Alive() and (ent:GetMoveType() != 10 or ent:GetMoveType() != 8) then
 															ent:SetNWBool( "WarmUpBegin", true )
 															--ent:SetMaterial("models/shiny") -- just for testing
 															ent:SetNWBool( "WarmUp", true) 

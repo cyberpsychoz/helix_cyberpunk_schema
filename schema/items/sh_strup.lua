@@ -4,7 +4,7 @@ ITEM.model = "MODEL"
 ITEM.width = 1
 ITEM.height = 1
 ITEM.price = 1
-ITEM.category = "Прокачка"
+ITEM.category = "LVL-UP THINGS"
 
 
 ITEM.functions.Use = {

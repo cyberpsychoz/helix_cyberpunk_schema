@@ -1,6 +1,6 @@
 ITEM.name = "Бронежилет \"Militech - MILVEST\""
 ITEM.description = "Такие бронежилеты часто использует постовая служба и те кому они положены по уставу."
-ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.model = "models/mass_effect_3/weapons/misc/armor case smaller.mdl"
 ITEM.width = 2
 ITEM.height = 2
 ITEM.price = 750

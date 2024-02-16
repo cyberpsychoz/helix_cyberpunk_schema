@@ -7,3 +7,4 @@ ITEM.adminPills = true
 ITEM.category = "Medicine"
 ITEM.useSound = "items/medshot4.wav"
 ITEM.price = 80085
+ITEM.chance = 0

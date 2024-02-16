@@ -11,6 +11,13 @@ ix.lang.AddTable("english", {
 	optdMusicVol = "Choose your preferred volume of the ambient music"
 })
 
+ix.lang.AddTable("english", {
+	ambient_music = "Фоновая музыка",
+
+	optMusicVol = "Звук фоновой музыки",
+	optdMusicVol = "Выберите предпочитаемую вами громкость эмбиентной музыки"
+})
+
 CAMI.RegisterPrivilege({
 	Name = "Helix - Music Player",
 	MinAccess = "admin"
@@ -43,26 +50,54 @@ MUSIC_STINGER = 4
 
 ix.Music = {
 
-	{ "cyberpunkmusic/2049.mp3", 111, MUSIC_MENU, "2049" },
-	{ "cyberpunkmusic/vangelis.mp3", 410, MUSIC_MENU, "Vangelis" },
-	{ "cyberpunkmusic/ofortuna.mp3", 170, MUSIC_NOPLAY, "FORTUNA" },
-	{ "cyberpunkmusic/vangelis-one-more-kiss-dear.mp3", 237, MUSIC_NOPLAY, "One more kiss" },
-	{ "cyberpunkmusic/vangelis-damask-rose.mp3", 150, MUSIC_AMBIENT, "Damask Rose" },
-	{ "cyberpunkmusic/vangelis-memories-of-green.mp3", 305, MUSIC_AMBIENT, "Memories of Green" },
-	{ "cyberpunkmusic/mesa.mp3", 291, MUSIC_AMBIENT, "Mesa 2049" },
-	{ "cyberpunkmusic/2049_01.mp3", 80, MUSIC_AMBIENT, "Ghoose 2049" },
+	{ "cyberpunkmusic/turned_around.mp3", 180, MUSIC_MENU, "Turned Around" },
+	
+	{ "cyberpunkmusic/the_promise.mp3", 180, MUSIC_NOPLAY, "The Promise" },
+	{ "cyberpunkmusic/riot_control.mp3", 180, MUSIC_NOPLAY, "Riot Control" },
+	{ "cyberpunkmusic/nue.mp3", 180, MUSIC_NOPLAY, "Nue" },
+	{ "cyberpunkmusic/mynah.mp3", 180, MUSIC_NOPLAY, "Mynah" },
+	{ "cyberpunkmusic/matryoshka.mp3", 180, MUSIC_NOPLAY, "Matryoshka" },
+	{ "cyberpunkmusic/labyrinth.mp3", 180, MUSIC_NOPLAY, "Labyrinth" },
+	{ "cyberpunkmusic/kolibri.mp3", 180, MUSIC_NOPLAY, "Kolibri" },
+	{ "cyberpunkmusic/intensive_care.mp3", 180, MUSIC_NOPLAY, "Intensive Care" },
+	{ "cyberpunkmusic/incinerator.mp3", 180, MUSIC_NOPLAY, "Incinerator" },
+	{ "cyberpunkmusic/cant.mp3", 180, MUSIC_NOPLAY, "I cant stop now" },
+	{ "cyberpunkmusic/blockwart.mp3", 180, MUSIC_NOPLAY, "Blockwart" },
+
+	{ "cyberpunkmusic/ariane.mp3", 180, MUSIC_AMBIENT, "Ariane Theme" },
+	{ "cyberpunkmusic/you_have_changed.mp3", 180, MUSIC_AMBIENT, "You Have Changed" },
+	{ "cyberpunkmusic/warm_light.mp3", 180, MUSIC_AMBIENT, "Warm Light" },
+	{ "cyberpunkmusic/visions.mp3", 180, MUSIC_AMBIENT, "Visions of Alina" },
+	{ "cyberpunkmusic/train_ride.mp3", 180, MUSIC_AMBIENT, "Train Ride" },
+	{ "cyberpunkmusic/red_gate.mp3", 180, MUSIC_AMBIENT, "The Red Gate" },
+	{ "cyberpunkmusic/teeth.mp3", 180, MUSIC_AMBIENT, "Teeth" },
+	{ "cyberpunkmusic/ritual.mp3", 180, MUSIC_AMBIENT, "Ritual" },
+	{ "cyberpunkmusic/ritual_nowhere.mp3", 180, MUSIC_AMBIENT, "Ritual Nowhere" },
+	{ "cyberpunkmusic/3000_cycles.mp3", 180, MUSIC_AMBIENT, "3000 Cycles" },
+	{ "cyberpunkmusic/orrery.mp3", 180, MUSIC_AMBIENT, "Orrery" },
+	{ "cyberpunkmusic/mnhr.mp3", 180, MUSIC_AMBIENT, "MNHR" },
+	{ "cyberpunkmusic/memory.mp3", 180, MUSIC_AMBIENT, "Memory" },
+	{ "cyberpunkmusic/falke_theme.mp3", 180, MUSIC_AMBIENT, "Falke Theme" },
+	{ "cyberpunkmusic/liminality.mp3", 180, MUSIC_AMBIENT, "Liminality" },
+	{ "cyberpunkmusic/home.mp3", 180, MUSIC_AMBIENT, "Home" },
+	{ "cyberpunkmusic/ewige.mp3", 180, MUSIC_AMBIENT, "Ewige" },
+	{ "cyberpunkmusic/eulenlieder.mp3", 180, MUSIC_AMBIENT, "Eulenlieder" },
+	{ "cyberpunkmusic/eternity.mp3", 180, MUSIC_AMBIENT, "Eternity of a box" },
+	{ "cyberpunkmusic/dream_dairy.mp3", 180, MUSIC_AMBIENT, "Dream Dairy" },
+	{ "cyberpunkmusic/emptiness.mp3", 180, MUSIC_AMBIENT, "Emptiness" },
+	{ "cyberpunkmusic/bodies.mp3", 180, MUSIC_AMBIENT, "Bodies" },
+	{ "cyberpunkmusic/adler.mp3", 180, MUSIC_AMBIENT, "Adler" },
+	
+	{ "cyberpunkmusic/become.mp3", 180, MUSIC_COMBAT, "Become hole again" },
+	{ "cyberpunkmusic/prison.mp3", 180, MUSIC_COMBAT, "Prison" },
 	{ "cyberpunkmusic/hyper-spoiler.mp3", 65, MUSIC_COMBAT, "Cyberpunk 1" },
 	{ "cyberpunkmusic/p-t-adamczyk-scavengers.mp3", 65, MUSIC_COMBAT, "Cyberpunk 2" },
 	{ "cyberpunkmusic/p-t-adamczyk-scavenger-hunt.mp3", 65, MUSIC_COMBAT, "Cyberpunk 3" },
 	{ "cyberpunkmusic/p-t-adamczyk-the-rebel-path.mp3", 65, MUSIC_COMBAT, "Cyberpunk 4" },
 	{ "cyberpunkmusic/hell.mp3", 65, MUSIC_COMBAT, "Cyberpunk 5" },
-	{ "cyberpunkmusic/stingers/hl1_stinger_song7.mp3", 23, MUSIC_STINGER, "Apprehensive" },
-	{ "cyberpunkmusic/stingers/hl1_stinger_song8.mp3", 9, MUSIC_STINGER, "Bass String" },
-	{ "cyberpunkmusic/stingers/hl1_stinger_song16.mp3", 16, MUSIC_STINGER, "Scared Confusion" },
-	{ "cyberpunkmusic/stingers/hl1_stinger_song27.mp3", 17, MUSIC_STINGER, "Dark Piano" },
-	{ "cyberpunkmusic/vangelis-blade-runner-end-titles.mp3", 280, MUSIC_STINGER, "End" },
-	{ "cyberpunkmusic/vangelis-blush-response.mp3", 345, MUSIC_STINGER, "Blush Responce" },
 
+	{ "cyberpunkmusic/rotfront_moon.mp3", 180, MUSIC_STINGER, "Rotfront Moon" },
+	--{ "cyberpunkmusic/vangelis-blade-runner-end-titles.mp3", 280, MUSIC_STINGER, "End" },
 }
 
 function Schema:GetSongDuration(path)

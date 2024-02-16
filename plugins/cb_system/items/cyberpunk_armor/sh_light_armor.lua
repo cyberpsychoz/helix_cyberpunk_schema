@@ -1,6 +1,6 @@
 ITEM.name = "Лёгкий бронежилет \"Militech - CIVIL\""
 ITEM.description = "Один из самых распространенных и удобных бронежилетов среди гражданского население Мондфилда."
-ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.model = "models/mass_effect_3/weapons/misc/armor case smaller.mdl"
 ITEM.width = 2
 ITEM.height = 2
 ITEM.price = 450

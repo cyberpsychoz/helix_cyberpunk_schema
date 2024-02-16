@@ -10,5 +10,4 @@ FACTION.models = {
     "models/terminator_p.mdl"
 }
 
-FACTION_NAME = FACTION.index
 FACTION_AUTORAVE = FACTION.index

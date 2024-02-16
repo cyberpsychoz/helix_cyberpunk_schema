@@ -1,6 +1,6 @@
 ITEM.name = "Барьерный костюм \"Militech - EXO\""
 ITEM.description = "Был создан специально для того чтобы уберечь полевых нетраннеров от физических повреждений. Надежен, эффективен, в нем даже можно пережить ядерный взрыв... Наверное?"
-ITEM.model = "models/mass_effect_3/weapons/misc/ammobox1 small.mdl"
+ITEM.model = "models/mass_effect_3/weapons/misc/armor case.mdl"
 ITEM.width = 2
 ITEM.height = 2
 ITEM.price = 5000

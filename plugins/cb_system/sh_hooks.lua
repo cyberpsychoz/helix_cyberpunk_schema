@@ -65,6 +65,10 @@ local deathMessages = {
 
 -- смерть
 function PLUGIN:PlayerDeath( victim, inflictor, attacker )
+	victim:ConCommand("stopsound")
+
+	victim:ConCommand("playdeathsound")
+
 	local character = victim:GetCharacter()
 	local bonus = character:GetAttribute("phy", 0) + character:GetAttribute("ref", 0)
 	local total = bonus - character:GetAttribute("luck", 0)
@@ -117,6 +121,7 @@ function PLUGIN:PlayerDeath( victim, inflictor, attacker )
 	end
 end
 
+-- Хук загрузки персонажа и установки брони ему
 hook.Add("PostPlayerLoadout", "SetDefaultArmor", function(player)
     local character = player:GetCharacter()
     local maxHP = character:GetAttribute("phy") * 10

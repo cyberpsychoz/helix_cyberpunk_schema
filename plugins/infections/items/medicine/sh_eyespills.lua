@@ -7,3 +7,4 @@ ITEM.category = "Medicine"
 ITEM.useSound = "items/medshot4.wav"
 ITEM.healing = "blindness"
 ITEM.price = 1000
+ITEM.chance = 15
