@@ -284,6 +284,15 @@ ix.command.Add("tpDeathPos", {
     end
 })
 
+ix.command.Add("CharGetPos", {
+	adminOnly = true,
+    description = "Показывает координаты игрока: ДЕБАГ",
+    OnRun = function(self, client)
+    	local position = client:GetPos()
+        print("Координаты: ", position.x .. ", " .. position.y .. ", " .. position.z)
+    end
+})
+
 ix.command.Add("characterData", {
 	adminOnly = true,
     syntax = "<имя персонажа>",

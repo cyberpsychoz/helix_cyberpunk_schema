@@ -3,28 +3,28 @@ AddCSLuaFile()
 ENT.Base = "base_ai"
 ENT.Type = "ai"
 
-ENT.PrintName = "Бустер шестёрка"
+ENT.PrintName = "Бустер наёмник"
 ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 --ENT.bNoPersist = true
-ENT.Armor = 1
-ENT.Evasion = 5
-ENT.HitChance = 35
-ENT.HitPenetration = 2
-ENT.Damage = 20
+ENT.Armor = 2
+ENT.Evasion = 15
+ENT.HitChance = 25
+ENT.HitPenetration = 3
+ENT.Damage = 45
 
 if SERVER then
 
     local models = {
-        "models/cyberpunk/mutants/mutant1.mdl",
-        "models/cyberpunk/mutants/mutant2.mdl",
-        "models/cyberpunk/mutants/mutant3.mdl",
-        "models/thespireroleplay/humans/group009/male.mdl",
-        "models/humans/group01/female_38.mdl",
-        "models/humans/group01/male_32.mdl",
-        "models/humans/group03/coalition_female.mdl",
-        "models/humans/group03/coalition_male.mdl"
+        "models/humans/group03m/female_20.mdl",
+        "models/humans/group03/male_43.mdl",
+        "models/humans/group03/male_42.mdl",
+        "models/humans/group03/female_61.mdl",
+        "models/humans/group01/male_56.mdl",
+        "models/humans/tyson.mdl",
+        "models/humans/group03/male_70.mdl",
+        "models/humans/group03m/female_29.mdl"
     }
 
     local cooldownTime = 15
@@ -41,7 +41,7 @@ if SERVER then
         self:SetSolid(SOLID_BBOX)
         self:DropToFloor()
 
-        self:SetHealth(75)
+        self:SetHealth(125)
         self:CapabilitiesAdd(CAP_MOVE_GROUND)
 
         self:SetMoveType(MOVETYPE_NONE)
@@ -61,27 +61,16 @@ if SERVER then
         end
 
         local phrasesBad = {
-            "Я... А-ай бля-я!",
-            "У меня есть доза, но только не для тебя!",
-            "Пошел нахуй отсюда!",
-            "Это моя территория, какого хуя ты тут шляешься?",
-            "Ебучие сучки корпоратов, съебались отсюда!",
-            "Съеби нахрен отсюда пока цел!",
-            "Деньги или жизнь, уёбок. Быстро определяйся!",  
-            "Ты чо, ко мне лезешь? Сh'wаhа оторву!",
-            "Ща морду твою на куски порежу, еще раз сунешься!",
-            "Завали ебало, пока не пристрелил тут же.",
-            "У меня терпение на исходе, сучонок. Вали отсюда!",
-            "Не суй свой нос куда не надо, ясно? А то плохо будет.",
-            "Отвали и не выебывайся, петушок. Проходи мимо.",
-            "Еще одно слово, и я вырву твой ебаный язык!",
-            "Слышь, мудила, я тебе морду нахер разобью сейчас.",
-            "Завались и не высовывайся, пока я добрый.",
-            "Ты чо, охуел тут рот открывать? Закрой его нахуй.",
-            "Вали отсюда пока цел, урод ёбаный.",
-            "Не беси меня, сучёнок, а то херово будет.",
-            "Я тебя на кусочки порежу и собакам скормлю, понял?",
-            "Долго ещё пиздеть будешь? Отъебись, пока голова на плечах."
+            "Не стоит со мной связываться, это опасно для твоего здоровья.",
+            "Я бы на твоем месте держался подальше.",
+            "Лучше пройди мимо, пока цел и невредим. Не стоит меня беспокоить.",
+            "У меня нет времени на пустую болтовню. Иди своей дорогой.", 
+            "Не лезь ко мне со своими расспросами. Это не принесет тебе ничего хорошего.",
+            "Я предпочитаю действовать, а не болтать. Так что оставь меня в покое.",
+            "Хочешь сохранить свое здоровье? Тогда не задерживайся здесь надолго.",
+            "У меня есть дела поважнее, чем отвечать на твои вопросы. Иди с миром.",
+            "Я не привык разговаривать с незнакомцами. Проходи мимо и не обращай на меня внимания.",
+            "Если хочешь остаться в живых - вали отсюда поскорее. На твоем месте я бы так и сделал."
         }
 
         local character = client:GetCharacter()
@@ -112,7 +101,7 @@ if SERVER then
             --print("Уклонение: ", evasion)
 
             local hitChance = math.random(1, self.HitChance)
-            local damage = math.random(1, self.Damage )
+            local damage = math.random(15, self.Damage )
 
             if character then
                 if hitChance > evasion then
@@ -154,16 +143,21 @@ if SERVER then
         self:AttackPlayer(attacker)
         self:SetHealth(self:Health() - damage)
         local phrases = {
-            "ТВАРЬ! ТЫ НЕ ПРЕДСТАВЛЯЕШЬ ЧТО ТЕБЕ ЗА ЭТО БУДЕТ!",
-            "НАХУЙ НАХУЙ НАХУЙ! БЛЯТЬ, БЛЯТЬ, БЛЯТЬ!",
-            "КОРПОРАТИВНЫЕ ВЫБЛЯДКИ!",
-            "А-А-А-А! А-а-а! А-а-а-а-а...",
-            "Я НЕ СДОХНУ ВОТ ТАК!",
-            "Аргх... Мх-х... С-суки...",
-            "И это... Арх... И это все что ты можешь?!",
-            "А-а!... А!...",
-            "Ладно, я сдаюсь! Хватит! Хватит!",
-            "Сука! Да за что?!"
+            "Твоя свобода ограничивается силами корпораций, просто сдайся!",
+            "Арг-х... Черт, хватит стрелять по мне! Идиот!",
+            "Убирайтесь отсюда, мы никому не вредим!",
+            "Блять, никак вы не научитесь...",
+            "Даю последний шанс уйти с миром!",
+            "Хватит! Я не хочу причинять тебе вреда.",  
+            "Отойди! Давай решим это мирно.",
+            "Проклятье! Прекрати стрелять!",
+            "Я вынужден защищаться, если ты продолжишь нападать.",
+            "Ты совершаешь ошибку! Остановись, пока не поздно.",
+            "Не надо этого делать! Остановись сейчас же.",
+            "Черт возьми! Я же тебя убью.",
+            "Хватит уже! Даю тебе последний шанс остановиться.", 
+            "Еще один выстрел, и тебе пиздец",
+            "Подонок, неужели ты думаешь что это сойдет тебе с рук?!"
         }
         for _, ply in ipairs(player.GetAll()) do
             if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
@@ -192,8 +186,10 @@ if SERVER then
             self:Remove()
 
             local itemTableList = {
-                "paracetamol",
-                "polimerpistol",
+                "shotgun",
+                "novaki",
+                "tamaura",
+                "medkit",
                 "meth"
             }
 
@@ -223,18 +219,18 @@ if CLIENT then
 
         local title = tooltip:AddRow("name")
         title:SetImportant()
-        title:SetText("Бустер - шестёрка")
+        title:SetText("Бустер - наёмник")
         title:SetBackgroundColor(ix.config.Get("color"))
         title:SizeToContents()
 
         local description = tooltip:AddRow("description")
-        description:SetText("Среднестатистический бустер, отброс общества, одет как попало, склыдвается ощущение что он под кайфом. Навряд-ли он сможет дать отпор.")
+        description:SetText("Перед вами мускулистый человек в броне, тело увешано боевым снаряжением - этот опасный и смертоносный боец явно готов применить силу к любому, кто посмеет потревожить его покой.")
         description:SizeToContents()
     end
 end
 
-list.Set( "NPC", "ix_booster_low", {
-    Name = "Бустер шестёрка",
-    Class = "ix_booster_low",
+list.Set( "NPC", "ix_booster_med", {
+    Name = "Бустер наёмник",
+    Class = "ix_booster_med",
     Category = "Cyberpunk RED"
 })

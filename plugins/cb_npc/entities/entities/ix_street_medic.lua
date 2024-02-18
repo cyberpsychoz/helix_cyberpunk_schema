@@ -3,7 +3,7 @@ AddCSLuaFile()
 ENT.Base = "base_ai"
 ENT.Type = "ai"
 
-ENT.PrintName = "Гражданин - репликант"
+ENT.PrintName = "Уличный медик"
 ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
@@ -45,39 +45,11 @@ if SERVER then
         self:StartSchedule(schedule)
     end
     ]]
-    util.AddNetworkString("OpenDialoguePanel_citizen")
-    util.AddNetworkString("UnfreezePlayer") -- Разморозка
-
-    net.Receive("UnfreezePlayer", function(len, ply)
-        if IsValid(ply) then
-            ply:Freeze(false)
-        end
-    end)
+    util.AddNetworkString("OpenDialoguePanel_Medic")
 
     local models = {
-        "models/humans/group01/male_77.mdl",
-        "models/humans/group01/male_78.mdl",
-        "models/humans/group01/male_80.mdl",
-        "models/humans/group01/male_49.mdl",
-        "models/cyberpunk/group01/female_13.mdl",
-        "models/cyberpunk/group01/female_04.mdl",
-        "models/humans/group01/male_127.mdl",
-        --"mmodels/cyberpunk/group02/female_12.mdl",
-        "models/barnes/refugee/female_77.mdl",
-        "models/cyberpunk/group02/female_02.mdl",
-        "models/cyberpunk/group01/female_09.mdl",
-        "models/cyberpunk/group01/male_08.mdl",
-    }
-
-    local voices = {
-        "cyberpunksounds/npc/voices/male_standard_1.ogg",
-        "cyberpunksounds/npc/voices/male_standard_2.ogg",
-        "cyberpunksounds/npc/voices/male_standard_3.ogg",
-        "cyberpunksounds/npc/voices/male_standard_4.ogg",
-        "cyberpunksounds/npc/voices/female_standard_1.ogg",
-        "cyberpunksounds/npc/voices/female_standard_2.ogg",
-        "cyberpunksounds/npc/voices/female_standard_3.ogg",
-        "cyberpunksounds/npc/voices/female_standard_4.ogg"
+        "models/humans/group03m/male_95.mdl",
+        "models/humans/group03m/female_27.mdl",
     }
 
     local cooldownTime = 15
@@ -86,7 +58,6 @@ if SERVER then
 
     function ENT:Initialize()
         local randomModel = math.random(1, #models)
-        self.randomVoice = voices[math.random(1, #voices)]
         self:SetModel(models[randomModel])
         self:SetHullType(HULL_HUMAN)
         self:SetHullSizeNormal()
@@ -122,36 +93,29 @@ if SERVER then
         end
 
         local phrasesBad = {
-            "Вам что-то нужно?",
-            "Вы меня с кем-то путаете...",
-            "Отойдите пожалуйста...",
-            "Я не понимаю что вы хотите от меня...",
-            "Да-да?"
+            "Ты меня не видел...",
+            "Я не буду тебе ничего продавать...",
+            "Пожалуйста, отстань от меня...",
+            "Убери свои руки!",
+            "Нет, я это не продаю, только показываю..."
         }
 
         local character = client:GetCharacter()
         if character then
-            local cha = character:GetAttribute("cha", 0)
-            local rit = character:GetSkill("ritorics", 0)
-            local int = character:GetAttribute("int", 0)
-
-            --print("Харизма: " .. cha, "Риторика: " .. rit, "Интеллект: " .. int)
-
-            if int >= 1 and cha >= 5 then
+            local cha = character:GetSkill("ritorics", 0)
+            if cha >= 5 then
                 -- Разворот поворот
                 local direction = (client:GetPos() - self:GetPos()):GetNormalized()
                 self:SetAngles(direction:Angle())
 
                 --client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"Глянь на мои товары!\"")]]))
-                net.Start("OpenDialoguePanel_citizen")
-                net.WriteString(self.randomVoice)
-                net.Send(client) -- ОТПРАВКА НА КЛИЕНТ
-                client:Freeze(true) -- ЗАМОРОЗКА
+                net.Start("OpenDialoguePanel_Medic")
+                net.Send(client)
 
                 --self:CapabilitiesRemove(CAP_MOVE_GROUND)
             else
                 local randomBad = math.random(1, #phrasesBad)
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Самый обыкновенный граж...] говорит: \"%s\"")]], phrasesBad[randomBad]))
+                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный медик...] говорит: \"%s\"")]], phrasesBad[randomBad]))
 
                 nextInteractionTime = CurTime() + cooldownTime
             end
@@ -182,14 +146,14 @@ if SERVER then
             if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
                 if math.random(0, 100) <= 35 then
                     local randomIndex = math.random(1, #phrases)
-                    ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Самый обыкновенный граж...] кричит: \"%s\"")]], phrases[randomIndex]))
+                    ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный медик...] кричит: \"%s\"")]], phrases[randomIndex]))
                 end
             end
         end
         if(self:Health() <= 0) then
             for _, ply in ipairs(player.GetAll()) do
                 if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
-                    ply:SendLua([[chat.AddText(Color(191, 191, 191), "**[Самый обыкновенный граж...] умирает в агонии, крича и умоляя о пощаде.")]])
+                    ply:SendLua([[chat.AddText(Color(191, 191, 191), "**[Типичный уличный медик...] роняет все свои товары, безжизненно падая на землю.")]])
                 end
             end
             self:SetNoDraw(true)
@@ -214,11 +178,8 @@ if SERVER then
     end            
 end
 
-if CLIENT then    
-
-    net.Receive("OpenDialoguePanel_citizen", function(len)
-
-        local randomVoice = net.ReadString()
+if CLIENT then
+    net.Receive("OpenDialoguePanel_Medic", function(len)
         local ply = LocalPlayer()
         --print("TEST WINDOW DIALOGUE | Ply: ", ply)
         if IsValid(ply) and ply:IsPlayer() then
@@ -234,9 +195,9 @@ if CLIENT then
             frame.Paint = function(self, w, h)
                 draw.RoundedBox(8, 0, 0, w, h, Color(0, 0, 0, 200))
             end
-
+    
             local button1 = vgui.Create("DButton", frame)
-            button1:SetText("Говорить")
+            button1:SetText("Медицинская помощь")
             button1:SetSize(200, 40) -- Увеличиваем размер кнопки
             button1:SetPos(frame:GetWide() / 2 - button1:GetWide() / 2, 20) -- Центрируем кнопку по горизонтали
             --button1:SetFont("TTSupermolotNeue-Medium") -- Устанавливаем шрифт
@@ -244,39 +205,11 @@ if CLIENT then
                 -- Убираем окантовку у кнопки
             end
             button1.DoClick = function()
-                talkness = {
-                    "Говорят, что под городом обитают обезумевшие \nавторейвы, которые нападают на людей. Несколько \nтехников пропали без вести после того, \nкак спустились в эти тоннели.",
-                    "Я устал от этого грязного города.",
-                    "Власти обещают, а мы как жили в нищете, так и живем.",
-                    "Лучше не связываться с бандами, от них одни проблемы.",
-                    "Ты новенький? Смотри не попадись бустерам,они тебя \nбыстро грохнут.",
-                    "На улицах опасно, лучше сидеть дома.",
-                    "Корпорации думают только о прибыли, им плевать \nна простых людей.",
-                    "Слышал, опять в тоннелях бунт, рабочие требуют \nповысить зарплату.",
-                    "Мечтаю когда-нибудь уехать из этой дыры в нормальный \nгород.",   
-                    "Ты слышал в новостях об преступниках? Надо быть \nосторожнее...",
-                    "Ненавижу этот поезд! Каждый день ждать по два часа.",
-                    "Воздух здесь такой грязный, что лучше не открывать \nокна в доме.",
-                    "Берегись, в последнее время участились нападения \nдеструкторов.",
-                    "Не покупай еду у уличных торговцев, в ней одни \nконсерванты.",
-                    "Ты слышал про новый вирус? Говорят, люди от него с ума \nсходят.",
-                    "Полиции здесь не доверяю. Все они на жаловании у глав \nкорпораций.",
-                    "Ненавижу рекламные дроны! Один чуть не упал мне на \nголову.",
-                    "Милитех опять устроили учения неподалеку. \nБудто мало нам шума!",
-                    "Не ходи в третий дистрикт, там полно мародеров \nи наркоманов.",
-                    "Слышал, на окраине опять случился выброс радиации \nс завода.",
-                    "В этом дистрикте лучше не афишировать, что у тебя \nновый имплант.",
-
-                    "Слышал, в первом дистрикте открылось новое отделение \nгражданской полиции мондфилда. Теперь копы будут \nчаще патрулировать эти кварталы.",
-                }
-
-                local randomsay = math.random(1, #talkness)
-
-                DisplayText(talkness[randomsay], randomVoice)
+                -- Код для обработки выбора "Торговать"
             end
     
             local button2 = vgui.Create("DButton", frame)
-            button2:SetText("Попросить помощи [Риторика 10]")
+            button2:SetText("Попросить скидку [Риторика 22]")
             button2:SetSize(200, 40)
             button2:SetTextColor(Color(255, 165, 0))
             button2:SetPos(frame:GetWide() / 2 - button2:GetWide() / 2, 80) -- Размещаем кнопку ниже первой кнопки
@@ -285,14 +218,7 @@ if CLIENT then
                 -- Убираем окантовку у кнопки
             end
             button2.DoClick = function()
-                local character = ply:GetCharacter()
-                local ritorics = character:GetSkill("ritorics", 0)
-
-                if ritorics >= 10 then
-                    DisplayText("Даже если бы у меня были деньги...", randomVoice)
-                else
-                    DisplayText("Прости, мне нечем помочь тебе...", randomVoice)
-                end
+                -- Код для обработки выбора "Говорить [Риторика 10]"
             end
     
             local button3 = vgui.Create("DButton", frame)
@@ -306,9 +232,7 @@ if CLIENT then
             button3.DoClick = function()
                 frame:Close()
                 gui.EnableScreenClicker(false)
-                RemoveDisplayText()
-                net.Start("UnfreezePlayer")
-                net.SendToServer()
+                --:CapabilitiesAdd(CAP_MOVE_GROUND)
             end
         end
     end)
@@ -318,18 +242,18 @@ if CLIENT then
 
         local title = tooltip:AddRow("name")
         title:SetImportant()
-        title:SetText("Неизвестный")
+        title:SetText("Местный доктор")
         title:SetBackgroundColor(ix.config.Get("color"))
         title:SizeToContents()
 
         local description = tooltip:AddRow("description")
-        description:SetText("Самый обыкновенный гражданин Мондфилда, с виду непонятно репликант он или человек. Одет в повседневеную уличную одежду, выглядит не очень богато.")
+        description:SetText("Типичный уличный медик, одет как репликант. Заштопает любые раны за скромную сумму денег.")
         description:SizeToContents()
     end
 end
 
-list.Set( "NPC", "ix_citizen", {
-    Name = "Гражданин - репликант",
-    Class = "ix_citizen",
+list.Set( "NPC", "ix_street_medic", {
+    Name = "Уличный медик",
+    Class = "ix_street_medic",
     Category = "Cyberpunk RED"
 })

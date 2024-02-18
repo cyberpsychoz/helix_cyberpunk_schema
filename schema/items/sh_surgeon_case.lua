@@ -73,7 +73,7 @@ ITEM.functions.ImplantRemoving = {
                         net.WriteEntity(target)
                         net.Send(client)
                     else
-                        client:Notify("Вы должны смотреть на игрока чтобы провести операцию!")
+                        client:Notify("Вы должны смотреть на оболочку чтобы провести операцию!")
                         return false
                     end
                 else
@@ -81,11 +81,13 @@ ITEM.functions.ImplantRemoving = {
                     local dmg = math.random(0, 5)
                     target:TakeDamage(dmg)
                 end
-            else
+            elseif target:IsValid() and target:IsPlayer() then
                 ix.chat.Send(client, "me", "В попытке достать импланты из тела " .. target:GetName() .. " изувечил его до неузнаваемости. Судя по всему он вообще ничего не понимает в хирургии...")
                 ix.Diseases:SetRandomDisease(target)
                 local dmg = math.random(0, 35)
                 target:TakeDamage(dmg)
+            else
+                client:Notify("Вы должны смотреть на оболочку чтобы использовать это!")
             end
         end
         return false

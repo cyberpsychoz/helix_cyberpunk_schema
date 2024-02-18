@@ -7,33 +7,35 @@ ITEM.price = 3500
 ITEM.category = "Tools"
 
 local diseaseDescriptions = {
-    cough = "Кровоподтеки в легких, ",
+    cough = "Кровоподтеки в легких",
     cyberpsychosis = "Аномальная активность мозга и нервной системы",
     blindness = "Отслоение сетчатки, нарушение целостности зрительной коры",
     cogito = "Признаки нарушения конструкта, обнаруженны нетипичные нейронные связи"
 }
 
 function ScanDisease(client)
-    local character = client:GetCharacter()
-    local diseases = character:GetData("diseaseInfo", "Нету.")
+    if client:IsValid() then
+        local character = client:GetCharacter()
+        local diseases = character:GetData("diseaseInfo", "Нету.")
 
-    -- Создаем пустую строку для хранения описаний болезней
-    local diseaseInfo = ""
+        -- Создаем пустую строку для хранения описаний болезней
+        local diseaseInfo = "\n"
 
-    -- Разбиваем строку болезней на отдельные названия
-    local diseaseNames = string.Split(diseases, ";")
+        -- Разбиваем строку болезней на отдельные названия
+        local diseaseNames = string.Split(diseases, ";")
 
-    -- Для каждого названия болезни находим соответствующее описание
-    for _, name in ipairs(diseaseNames) do
-        local description = diseaseDescriptions[name]
-        if description then
-            -- Добавляем описание к строке diseaseInfo
-            diseaseInfo = diseaseInfo .. description .. "|"
+        -- Для каждого названия болезни находим соответствующее описание
+        for _, name in ipairs(diseaseNames) do
+            local description = diseaseDescriptions[name]
+            if description then
+                -- Добавляем описание к строке diseaseInfo
+                diseaseInfo = diseaseInfo .. description .. "\n"
+            end
         end
-    end
 
-    --print("Болячки: ", diseaseInfo)
-    return diseaseInfo
+        --print("Болячки: ", diseaseInfo)
+        return diseaseInfo
+    end
 end
 
 ITEM.functions.ScanSelf = {
@@ -101,7 +103,7 @@ ITEM.functions.Scan = {
         -- ТЕстик
         --ScanDisease(ply)
 
-        if IsValid(target) then
+        if target:IsValid() and target:GetClass() == "player" then
             local diseases = ScanDisease(target)
             --print(diseases)
 

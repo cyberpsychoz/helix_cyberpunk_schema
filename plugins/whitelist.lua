@@ -34,13 +34,13 @@ if SERVER then
         local steamID = util.SteamIDFrom64(steamID64)
 
         if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
-            return false, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U"
+            return false, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U \nИли зайдите на сайт: http://cyberpunk-red-wiki.kesug.com/ \nНе волнуйтесь, для вайтлиста вам всего лишь нужно заполнить простую форму, а не писать квенту на 10 листов.\nС уважением, администрация проекта."
         end
     end
 
     function PLUGIN:PlayerAuthed(client, steamID, uniqueID)
         if ix.config.Get("whitelistEnabled") and not self.allowed[steamID] then
-            game.KickID(uniqueID, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U")
+            game.KickID(uniqueID, "Уп-с! Кажется вас нет в вайтлисте, чтобы получить доступ к серверу, обратитесь в дискорд: https://discord.gg/Nyr7mZA32U \nИли зайдите на сайт: http://cyberpunk-red-wiki.kesug.com/ \nНе волнуйтесь, для вайтлиста вам всего лишь нужно заполнить простую форму, а не писать квенту на 10 листов.\nС уважением, администрация проекта.")
         end
     end
 end
@@ -52,7 +52,7 @@ ix.command.Add("WhitelistAdd", {
     arguments = ix.type.string,
     OnRun = function(self, client, steamID)
         if not steamID:match("STEAM_(%d+):(%d+):(%d+)") then
-            return "Invalid SteamID!"
+            return "Invalid сука твой айди!"
         end
 
         if PLUGIN.allowed[steamID] then
@@ -60,7 +60,7 @@ ix.command.Add("WhitelistAdd", {
         else
             PLUGIN.allowed[steamID] = true
 
-            return "Added SteamID to the whitelist"
+            return "Стимайди добавлен в список!"
         end
     end
 })
