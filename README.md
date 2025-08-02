@@ -14,8 +14,7 @@
 ![Карта](preview_07.jpg)
 ![Карта](preview_06.jpg)
 - 🎮 **Полноценный пошаговый бой** с системой инициативы
-![Пример боя](https://drive.google.com/file/d/1PQP8lfr7E_53GUbZth8AvBdO0_v7My0Z/view?usp=sharing)
-[![Пример бояt]({})]({https://drive.google.com/file/d/1PQP8lfr7E_53GUbZth8AvBdO0_v7My0Z/preview} "")
+[![Пример боя]({https://cdn.wccftech.com/wp-content/uploads/2020/06/Cyberpunk-2077-Jun-25th-Screenshots-4.jpg})](https://drive.google.com/file/d/1PQP8lfr7E_53GUbZth8AvBdO0_v7My0Z/preview "Типичный бой")
 - 👤 **Генератор персонажей** с кастомизацией:
   - Жизненный путь
   - Скиллы и стили боя
