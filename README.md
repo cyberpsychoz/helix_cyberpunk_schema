@@ -15,6 +15,7 @@
 ![Карта](preview_06.jpg)
 - 🎮 **Полноценный пошаговый бой** с системой инициативы
 ![Пример боя]([preview_video.mp4](https://drive.google.com/file/d/1PQP8lfr7E_53GUbZth8AvBdO0_v7My0Z/view?usp=sharing))
+<iframe src="https://drive.google.com/file/d/1PQP8lfr7E_53GUbZth8AvBdO0_v7My0Z/preview" width="640" height="480" allow="autoplay"></iframe>
 - 👤 **Генератор персонажей** с кастомизацией:
   - Жизненный путь
   - Скиллы и стили боя
