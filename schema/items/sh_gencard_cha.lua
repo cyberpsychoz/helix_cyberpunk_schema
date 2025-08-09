@@ -4,7 +4,7 @@ ITEM.model = "models/lt_c/sci_fi/holo_tablet.mdl"
 ITEM.skin = 4
 ITEM.width = 2
 ITEM.height = 1
-ITEM.price = 10000
+ITEM.price = 45000
 ITEM.category = "LVL-UP THINGS"
 
 

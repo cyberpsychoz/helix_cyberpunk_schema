@@ -10,3 +10,5 @@ ITEM.skillbonus = 15
 ITEM.skillname = "concentration"
 ITEM.basechance = 25
 ITEM.bodypart = "Нервная система"
+
+ITEM.price = 6000

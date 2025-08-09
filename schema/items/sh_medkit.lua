@@ -3,9 +3,10 @@ ITEM.description = "Последний шанс любого наемника, �
 ITEM.model = "models/germandude/verbandkasten/german_verbandkasten_old.mdl"
 ITEM.width = 3
 ITEM.height = 2
-ITEM.price = 450
+ITEM.price = 1200
 ITEM.category = "Medicine"
 ITEM.noBusiness = false
+ITEM.stackMax = 5
 
 ITEM.functions.Use = {
     name = "Залечить раны себе",

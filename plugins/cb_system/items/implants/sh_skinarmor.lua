@@ -10,3 +10,5 @@ ITEM.attrboost = "phy"
 ITEM.skillbonus = -5
 ITEM.skillname = "shooting"
 ITEM.bodypart = "Кожа"
+
+ITEM.price = 3100

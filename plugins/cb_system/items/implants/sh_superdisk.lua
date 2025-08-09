@@ -13,3 +13,5 @@ ITEM.skillbonus = 7
 
 ITEM.basechance = 45
 ITEM.bodypart = "Лобная доля"
+
+ITEM.price = 35000

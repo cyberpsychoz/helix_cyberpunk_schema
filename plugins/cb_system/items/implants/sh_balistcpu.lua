@@ -10,3 +10,5 @@ ITEM.skillbonus = 2
 ITEM.skillname = "shooting"
 ITEM.basechance = 8
 ITEM.bodypart = "Ладони"
+
+ITEM.price = 3500

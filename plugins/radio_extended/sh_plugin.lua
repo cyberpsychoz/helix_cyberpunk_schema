@@ -473,7 +473,7 @@ function PLUGIN:OverwriteClasses()
 	do
 		local CLASS = {}
 		CLASS.color = ix.config.Get("radioColor",Color(164,224,91)) -- Old: Color(75, 150, 50)
-		CLASS.format = "%s radios in: \"%s\""
+		CLASS.format = "%s вещает по рации: \"%s\""
 		CLASS.mult = 0 -- Percent multiplier to garbling fraction
 
 		function CLASS:GetColor(speaker, text)
@@ -1020,7 +1020,7 @@ function PLUGIN:OverwriteClasses()
 	do
 		local CLASS = {}
 		CLASS.color = ix.config.Get("chatColor") -- ix.chat.classes.ic.color Color(255, 255, 175)
-		CLASS.format = "%s radios in: \"%s\""
+		CLASS.format = "%s вещает по рации: \"%s\""
 
 		function CLASS:GetColor(speaker, text)
 			local color = ix.config.Get("chatColor")

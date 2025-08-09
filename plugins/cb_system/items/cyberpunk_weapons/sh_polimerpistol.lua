@@ -5,7 +5,7 @@ ITEM.category = "CyberWeapons"
 ITEM.flag = "V"
 ITEM.width = 1
 ITEM.height = 1
-ITEM.price = 200
+ITEM.price = 1200
 
 ITEM.weaponSkill = "pistols" -- уровень навыка можно получить командой GetSkill(), их значение должно прибавляться к броску
 ITEM.weaponDestination = 60000 -- расстояние на котрое будет пускаться луч, если он достает до цели, то будет попадание, если нет, то будет промах 

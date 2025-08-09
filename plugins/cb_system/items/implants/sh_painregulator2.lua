@@ -10,3 +10,5 @@ ITEM.skillbonus = 7
 ITEM.skillname = "concentration"
 ITEM.basechance = 10
 ITEM.bodypart = "Имунная система"
+
+ITEM.price = 2999

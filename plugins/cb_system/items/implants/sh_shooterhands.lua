@@ -10,3 +10,5 @@ ITEM.attrboost = "dex"
 ITEM.skillbonus = 5
 ITEM.skillname = "shooting"
 ITEM.bodypart = "Ладони"
+
+ITEM.price = 3400

@@ -3,16 +3,16 @@ AddCSLuaFile()
 ENT.Base = "base_ai"
 ENT.Type = "ai"
 
-ENT.PrintName = "Бустер наёмник"
+ENT.PrintName = "Бустер рецедивист"
 ENT.Category = "Cyberpunk RED NPC"
 ENT.Spawnable = true
 ENT.AdminOnly = true
 --ENT.bNoPersist = true
-ENT.Armor = 2
-ENT.Evasion = 15
-ENT.HitChance = 25
-ENT.HitPenetration = 3
-ENT.Damage = 45
+ENT.Armor = 3
+ENT.Evasion = 25
+ENT.HitChance = 50
+ENT.HitPenetration = 4
+ENT.Damage = 70
 
 if SERVER then
 
@@ -77,11 +77,11 @@ if SERVER then
         if character then
             local cha = character:GetSkill("ritorics", 0)
             if cha >= 5 then
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами мускулистый челов...] говорит: \"Здесь может быть небезопасно... Уходи отсюда...\"")]]))
+                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами самый отвратительный мар...] говорит: \"Здесь может быть небезопасно... Уходи отсюда...\"")]]))
                 nextInteractionTime = CurTime() + cooldownTime
             else
                 local randomBad = math.random(1, #phrasesBad)
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами мускулистый челов...] говорит: \"%s\"")]], phrasesBad[randomBad]))
+                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами самый отвратительный мар...] говорит: \"%s\"")]], phrasesBad[randomBad]))
 
                 nextInteractionTime = CurTime() + cooldownTime
             end
@@ -101,28 +101,28 @@ if SERVER then
             --print("Уклонение: ", evasion)
 
             local hitChance = math.random(1, self.HitChance)
-            local damage = math.random(15, self.Damage )
+            local damage = math.random(25, self.Damage )
 
             if character then
                 if hitChance > evasion then
                     if self.HitPenetration > armorclass then
                         for _, ply in ipairs(player.GetAll()) do
                             if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
-                                ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами мускулистый челов...] атакует в ответ %s нанося ему %s урона.")]], target:GetName(), damage))
+                                ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами самый отвратительный мар...] атакует в ответ %s нанося ему %s урона.")]], target:GetName(), damage))
                             end
                         end
                         target:TakeDamage(damage)
                     else
                         for _, ply in ipairs(player.GetAll()) do
                             if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
-                                ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами мускулистый челов..] атакует в ответ %s, но пуля рикошетит.")]], target:GetName()))
+                                ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами самый отвратительный мар...] атакует в ответ %s, но пуля рикошетит.")]], target:GetName()))
                             end 
                         end
                     end
                 else
                     for _, ply in ipairs(player.GetAll()) do
                         if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
-                            ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами мускулистый челов...] атакует в ответ %s и промахивается.")]], target:GetName())) 
+                            ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "**[Перед вами самый отвратительный мар...] атакует в ответ %s и промахивается.")]], target:GetName())) 
                         end
                     end
                 end
@@ -163,14 +163,14 @@ if SERVER then
             if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
                 if math.random(0, 100) <= 35 then
                     local randomIndex = math.random(1, #phrases)
-                    ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами мускулистый челов...] кричит: \"%s\"")]], phrases[randomIndex]))
+                    ply:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Перед вами самый отвратительный мар...] кричит: \"%s\"")]], phrases[randomIndex]))
                 end
             end
         end
         if(self:Health() <= 0) then
             for _, ply in ipairs(player.GetAll()) do
                 if ply:GetPos():DistToSqr(self:GetPos()) < 1000000 then
-                    ply:SendLua([[chat.AddText(Color(191, 191, 191), "**[Перед вами мускулистый челов...] всхлипывает, корчась от боли в предсмертных конвульсиях и истекая кровью.")]])
+                    ply:SendLua([[chat.AddText(Color(191, 191, 191), "**[Перед вами самый отвратительный мар...] всхлипывает, корчась от боли в предсмертных конвульсиях и истекая кровью.")]])
                 end
             end
             self:SetNoDraw(true)
@@ -189,7 +189,7 @@ if SERVER then
                 "shotgun",
                 "novaki",
                 "tamaura",
-                "medkit",
+                --"medkit",
                 --"meth"
             }
 
@@ -198,7 +198,7 @@ if SERVER then
             local itemTable = ix.item.list[randomItemID]
             local randomchance = math.random(0, 10)
             if itemTable then
-                if randomchance > 8 then
+                if randomchance > 9 then
                     local item = ix.item.Spawn(itemTable.uniqueID, ragdoll:GetPos() + Vector(0, 0, 10))
                 end
             end
@@ -224,13 +224,13 @@ if CLIENT then
         title:SizeToContents()
 
         local description = tooltip:AddRow("description")
-        description:SetText("Перед вами мускулистый человек в броне, тело увешано боевым снаряжением - этот опасный и смертоносный боец явно готов применить силу к любому, кто посмеет потревожить его покой.")
+        description:SetText("Перед вами самый отвратительный маргинал, которого вы когда-либо видели. Выглядит он просто ужасно, а запах от него еще хуже. Даже не вздумайте подходить к нему...")
         description:SizeToContents()
     end
 end
 
-list.Set( "NPC", "ix_booster_med", {
-    Name = "Бустер наёмник",
-    Class = "ix_booster_med",
+list.Set( "NPC", "ix_booster_high", {
+    Name = "Бустер рецедивист",
+    Class = "ix_booster_high",
     Category = "Cyberpunk RED"
 })

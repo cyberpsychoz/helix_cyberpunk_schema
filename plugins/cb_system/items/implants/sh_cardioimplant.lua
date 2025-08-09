@@ -11,3 +11,5 @@ ITEM.skillbonus = 2
 ITEM.skillname = "athletic"
 ITEM.basechance = 17
 ITEM.bodypart = "Кровеносная система"
+
+ITEM.price = 18000

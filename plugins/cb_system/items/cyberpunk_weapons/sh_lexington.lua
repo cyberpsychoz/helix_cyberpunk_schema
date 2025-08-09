@@ -5,7 +5,7 @@ ITEM.category = "CyberWeapons"
 ITEM.flag = "V"
 ITEM.width = 2
 ITEM.height = 1
-ITEM.price = 1200
+ITEM.price = 5000
 
 ITEM.weaponSkill = "pistols"
 ITEM.weaponDestination = 120000

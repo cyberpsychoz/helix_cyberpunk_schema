@@ -3,7 +3,7 @@ ITEM.description = "Очень старый ПНВ, интересно отку�
 ITEM.model = "models/cyberpunk/items/nvgoggles.mdl"
 ITEM.width = 2
 ITEM.height = 1
-ITEM.price = 5000
+ITEM.price = 35000
 ITEM.category = "Tools"
 
 if CLIENT then

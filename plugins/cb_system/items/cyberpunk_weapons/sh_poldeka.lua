@@ -5,7 +5,7 @@ ITEM.category = "CyberWeapons"
 ITEM.flag = "V"
 ITEM.width = 2
 ITEM.height = 2
-ITEM.price = 6000
+ITEM.price = 16000
 
 ITEM.weaponSkill = "netrunning"
 ITEM.weaponDestination = 120000

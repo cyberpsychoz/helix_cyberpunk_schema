@@ -10,3 +10,5 @@ ITEM.skillbonus = 10
 ITEM.skillname = "attention"
 ITEM.basechance = 35
 ITEM.bodypart = "Зрительная система"
+
+ITEM.price = 20000

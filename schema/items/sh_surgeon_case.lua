@@ -2,6 +2,7 @@ ITEM.name = "Хирургический набор"
 ITEM.model = "models/germandude/medbag/medbag_german.mdl"
 ITEM.description = "Набор инструментов для удаления имплантов."
 ITEM.basechance = 50
+ITEM.price = 6000
 
 function RemoveImplantData(target, bodypart)
     local character = target:GetCharacter()

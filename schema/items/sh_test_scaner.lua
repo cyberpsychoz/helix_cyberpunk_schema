@@ -3,7 +3,7 @@ ITEM.description = "Портативный сканер тестирования
 ITEM.model = "models/cyberpunk/items/w_eyescannerhack.mdl"
 ITEM.width = 1
 ITEM.height = 1
-ITEM.price = 3500
+ITEM.price = 9500
 ITEM.category = "Tools"
 
 local diseaseDescriptions = {

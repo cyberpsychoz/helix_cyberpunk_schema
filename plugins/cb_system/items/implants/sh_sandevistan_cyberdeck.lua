@@ -10,3 +10,5 @@ ITEM.skillbonus = 50
 ITEM.skillname = "netrunning"
 ITEM.basechance = 20 -- изначально 99
 ITEM.bodypart = "Операционная система"
+
+ITEM.price = 1200000

@@ -88,11 +88,11 @@ if SERVER then
         if character then
             local cha = character:GetSkill("ritorics", 0)
             if cha >= 5 then
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"Здесь может быть небезопасно... Уходи отсюда...\"")]]))
+                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Среднестатистический бустер, отброс общес...] говорит: \"Здесь может быть небезопасно... Уходи отсюда...\"")]]))
                 nextInteractionTime = CurTime() + cooldownTime
             else
                 local randomBad = math.random(1, #phrasesBad)
-                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Типичный уличный торг...] говорит: \"%s\"")]], phrasesBad[randomBad]))
+                client:SendLua(string.format([[chat.AddText(Color(191, 191, 191), "[Среднестатистический бустер, отброс общес...] говорит: \"%s\"")]], phrasesBad[randomBad]))
 
                 nextInteractionTime = CurTime() + cooldownTime
             end
@@ -112,7 +112,7 @@ if SERVER then
             --print("Уклонение: ", evasion)
 
             local hitChance = math.random(1, self.HitChance)
-            local damage = math.random(1, self.Damage )
+            local damage = math.random(3, self.Damage )
 
             if character then
                 if hitChance > evasion then
@@ -193,6 +193,9 @@ if SERVER then
 
             local itemTableList = {
                 "paracetamol",
+                "paracetamol",
+                "paracetamol",
+                "paracetamol",
                 "polimerpistol",
                 "meth"
             }
@@ -202,7 +205,7 @@ if SERVER then
             local itemTable = ix.item.list[randomItemID]
             local randomchance = math.random(0, 10)
             if itemTable then
-                if randomchance > 5 then
+                if randomchance > 7 then
                     local item = ix.item.Spawn(itemTable.uniqueID, ragdoll:GetPos() + Vector(0, 0, 10))
                 end
             end

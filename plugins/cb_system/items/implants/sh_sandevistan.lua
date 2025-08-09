@@ -10,3 +10,5 @@ ITEM.skillbonus = 62
 ITEM.skillname = "evasion"
 ITEM.basechance = 20 -- изначально 120
 ITEM.bodypart = "Нервная система"
+
+ITEM.price = 3600000

@@ -16,6 +16,7 @@ ITEM.height = 1
 
 -- Item Custom Configuration
 
+ITEM.stackMax = 10
 ITEM.bDropOnDeath = true
 
 -- Item Functions
