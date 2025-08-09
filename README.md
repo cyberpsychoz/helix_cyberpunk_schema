@@ -1,2 +1,2 @@
 # helix_cyberpunk_schema
-WAKE THE FUCK UP SAMURAI!
+Обновленная актуальная ветка 09.08.2025
